@@ -50,9 +50,9 @@ Neste projeto, verificamos se você é capaz de:
 
   1. Clone o repositório
 
-  - Use o comando: `git clone git@github.com:tryber/csharp-0x-projeto-trybe-hotel-fase-d.git`.
+  - Use o comando: `git clone git@github.com:tryber/csharp-001-projeto-trybe-hotel-fase-d.git`.
   - Entre na pasta do repositório que você acabou de clonar:
-    - `cd csharp-0x-projeto-trybe-hotel-fase-d`
+    - `cd csharp-001-projeto-trybe-hotel-fase-d`
 
   2. Instale as dependências
   
@@ -67,7 +67,7 @@ Neste projeto, verificamos se você é capaz de:
     - Exemplo: `git checkout master`
   - Agora crie uma branch à qual você vai submeter os `commits` do seu projeto
     - Você deve criar uma branch no seguinte formato: `nome-de-usuario-nome-do-projeto`
-    - Exemplo: `git checkout -b joaozinho-csharp-0x-projeto-trybe-hotel-fase-d`
+    - Exemplo: `git checkout -b joaozinho-csharp-001-projeto-trybe-hotel-fase-d`
 
   4. Adicione as mudanças ao _stage_ do Git e faça um `commit`
 
@@ -84,11 +84,11 @@ Neste projeto, verificamos se você é capaz de:
 
   5. Adicione a sua branch com o novo `commit` ao repositório remoto
 
-  - Usando o exemplo anterior: `git push -u origin joaozinho-csharp-0x-projeto-trybe-hotel-fase-d`
+  - Usando o exemplo anterior: `git push -u origin joaozinho-csharp-001-projeto-trybe-hotel-fase-d`
 
   6. Crie um novo `Pull Request` _(PR)_
 
-  - Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/csharp-0x-projeto-trybe-hotel-fase-d/pulls)
+  - Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/csharp-001-projeto-trybe-hotel-fase-d/pulls)
   - Clique no botão verde _"New pull request"_
   - Clique na caixa de seleção _"Compare"_ e escolha a sua branch **com atenção**
   - Coloque um título para a sua _Pull Request_
@@ -348,7 +348,7 @@ Após clonar o repositório deste projeto, apenas copie e cole as funcionalidade
 Ao finalizar e submeter o projeto, não se esqueça de avaliar sua experiência preenchendo o formulário. 
 **Leva menos de 3 minutos!**
 
-[FORMULÁRIO DE AVALIAÇÃO DE PROJETO](https://be-trybe.typeform.com/to/ZTeR4IbH)
+[FORMULÁRIO DE AVALIAÇÃO DE PROJETO](https://be-trybe.typeform.com/to/ZTeR4IbH#cohort_hidden=CH1&template=betrybe/csharp-0x-projeto-trybe-hotel-fase-d)
 
 </details>
 
