@@ -13,7 +13,11 @@ public class TrybeHotelContext : DbContext, ITrybeHotelContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
+        var connectionString = Environment.GetEnvironmentVariable("DOTNET_CONNECTION_STRING");
+        if (connectionString == null || connectionString.Length == 0)
+        {
+            connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
+        }
         optionsBuilder.UseSqlServer(connectionString);
     }
 }
