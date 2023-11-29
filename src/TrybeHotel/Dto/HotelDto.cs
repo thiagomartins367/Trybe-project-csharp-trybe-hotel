@@ -1,5 +1,7 @@
-namespace TrybeHotel.Dto {
-    public class HotelDto {
+namespace TrybeHotel.Dto
+{
+    public class HotelDto
+    {
         public int HotelId { get; set; }
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
