@@ -12,6 +12,25 @@ namespace TrybeHotel.Repository
             _context = context;
         }
 
+        private RoomDto GetRoomDto(Room room)
+        {
+            return new RoomDto()
+            {
+                RoomId = room.RoomId,
+                Name = room.Name,
+                Capacity = room.Capacity,
+                Image = room.Image,
+                Hotel = new HotelDto()
+                {
+                    HotelId = room.Hotel!.HotelId,
+                    Name = room.Hotel.Name,
+                    Address = room.Hotel.Address,
+                    CityId = room.Hotel.CityId,
+                    CityName = room.Hotel.City!.Name,
+                }
+            };
+        }
+
         // 6. Desenvolva o endpoint GET /room/:hotelId
         public IEnumerable<RoomDto> GetRooms(int HotelId)
         {
@@ -19,32 +38,19 @@ namespace TrybeHotel.Repository
                 .Where(room => room.HotelId == HotelId)
                 .Include(room => room.Hotel)
                 .ThenInclude(hotel => hotel!.City)
-                .ToList()
-                .Select(
-                    r =>
-                    {
-                        return new RoomDto()
-                        {
-                            RoomId = r.RoomId,
-                            Name = r.Name,
-                            Capacity = r.Capacity,
-                            Image = r.Image,
-                            Hotel = new HotelDto()
-                            {
-                                HotelId = r.Hotel!.HotelId,
-                                Name = r.Hotel.Name,
-                                Address = r.Hotel.Address,
-                                CityId = r.Hotel.CityId,
-                                CityName = r.Hotel.City!.Name,
-                            }
-                        };
-                    }
-                );
+                .Select(room => GetRoomDto(room));
         }
 
         // 7. Desenvolva o endpoint POST /room
-        public RoomDto AddRoom(Room room) {
-            throw new NotImplementedException(); 
+        public RoomDto AddRoom(Room room)
+        {
+            _context.Rooms.Add(room);
+            _context.SaveChanges();
+            Room newRoom = _context.Rooms
+                .Include(r => r.Hotel)
+                .ThenInclude(hotel => hotel!.City)
+                .First(r => r.RoomId == room.RoomId);
+            return GetRoomDto(newRoom);
         }
 
         // 8. Desenvolva o endpoint DELETE /room/:roomId
