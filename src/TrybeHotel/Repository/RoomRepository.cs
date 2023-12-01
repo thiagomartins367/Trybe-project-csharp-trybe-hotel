@@ -12,7 +12,7 @@ namespace TrybeHotel.Repository
             _context = context;
         }
 
-        private RoomDto GetRoomDto(Room room)
+        private static RoomDto GetRoomDto(Room room)
         {
             return new RoomDto()
             {
