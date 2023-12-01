@@ -205,4 +205,16 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             new RoomDto() { RoomId = 10, Name = "Room 10", Capacity = 4, Image = "Image 10", Hotel = new HotelDto() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" } }
         }
     };
+
+    [Trait("Category", "Route tests `/room`")]
+    [Theory(DisplayName = "Can delete a room")]
+    [InlineData("/room/1")]
+    public async Task TestDeleteRoomById(string url)
+    {
+        var response = await _clientTest.DeleteAsync(url);
+        var resContent = await response.Content.ReadAsStringAsync();
+
+        System.Net.HttpStatusCode.NoContent.Should().Be(response?.StatusCode);
+        resContent.Length.Should().Be(0);
+    }
 }
