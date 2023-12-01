@@ -100,6 +100,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
     {
         var response = await _clientTest.PostAsJsonAsync(url, cityEntry);
         var resContent = await response.Content.ReadFromJsonAsync<CityDto>();
+
         System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
         resContent.Should().BeEquivalentTo(expected);
     }
@@ -135,6 +136,27 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
                 new() { HotelId = 2, Name = "Trybe Hotel Palmas", Address = "Address 2", CityId = 2, CityName = "Palmas" },
                 new() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" },
             }
+        }
+    };
+
+    [Trait("Category", "Route tests `/hotel`")]
+    [Theory(DisplayName = "Can add a hotel")]
+    [MemberData(nameof(DataTestPostHotel))]
+    public async Task TestPostHotel(string url, Hotel hotelEntry, HotelDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, hotelEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<HotelDto>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, Hotel, HotelDto> DataTestPostHotel => new()
+    {
+        {
+            "/hotel",
+            new Hotel() { Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1 },
+            new HotelDto() { HotelId = 4, Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1, CityName = "Manaus" }
         }
     };
 }
