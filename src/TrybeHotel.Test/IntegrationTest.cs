@@ -69,7 +69,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             }).CreateClient();
     }
 
-    [Trait("Category", "Route tests '/city'")]
+    [Trait("Category", "Route tests `/city`")]
     [Theory(DisplayName = "Can get all cities")]
     [MemberData(nameof(DataTestGetCities))]
     public async Task TestGetCities(string url, IEnumerable<CityDto> expected)
@@ -93,7 +93,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
         }
     };
 
-    [Trait("Category", "Route tests '/city'")]
+    [Trait("Category", "Route tests `/city`")]
     [Theory(DisplayName = "Can add a city")]
     [MemberData(nameof(DataTestPostCity))]
     public async Task TestPostCity(string url, City cityEntry, CityDto expected)
@@ -110,6 +110,31 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             "/city",
             new City() { Name = "Guarulhos" },
             new CityDto() { CityId = 3, Name = "Guarulhos" }
+        }
+    };
+
+    [Trait("Category", "Route tests `/hotel`")]
+    [Theory(DisplayName = "Can get all hotels")]
+    [MemberData(nameof(DataTestGetHotels))]
+    public async Task TestGetHotels(string url, IEnumerable<HotelDto> expected)
+    {
+        var response = await _clientTest.GetAsync(url);
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<HotelDto>>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, IEnumerable<HotelDto>> DataTestGetHotels => new()
+    {
+        {
+            "/hotel",
+            new List<HotelDto>()
+            {
+                new() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" },
+                new() { HotelId = 2, Name = "Trybe Hotel Palmas", Address = "Address 2", CityId = 2, CityName = "Palmas" },
+                new() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" },
+            }
         }
     };
 }
