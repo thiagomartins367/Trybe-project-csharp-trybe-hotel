@@ -91,4 +91,24 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
         System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
         content.Should().BeEquivalentTo(expected);
     }
+
+    [Trait("Category", "Route tests '/city'")]
+    [Theory(DisplayName = "Can add a city")]
+    [MemberData(nameof(DataTestPostCity))]
+    public async Task TestPostCity(string url, City cityEntry, CityDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, cityEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<CityDto>();
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, City, CityDto> DataTestPostCity => new()
+    {
+        {
+            "/city",
+            new City() { Name = "Guarulhos" },
+            new CityDto() { CityId = 3, Name = "Guarulhos" }
+        }
+    };
 }
