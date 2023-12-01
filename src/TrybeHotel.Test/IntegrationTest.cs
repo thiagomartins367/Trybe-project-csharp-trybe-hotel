@@ -159,4 +159,29 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             new HotelDto() { HotelId = 4, Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1, CityName = "Manaus" }
         }
     };
+
+    [Trait("Category", "Route tests `/room`")]
+    [Theory(DisplayName = "Can get all rooms from a hotel")]
+    [MemberData(nameof(DataTestGetRoomsByHotelId))]
+    public async Task TestGetRoomsByHotelId(string url, IEnumerable<RoomDto> expected)
+    {
+        var response = await _clientTest.GetAsync(url);
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<RoomDto>>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, IEnumerable<RoomDto>> DataTestGetRoomsByHotelId => new()
+    {
+        {
+            "/room/1",
+            new List<RoomDto>()
+            {
+                new() { RoomId = 1, Name = "Room 1", Capacity = 2, Image = "Image 1", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+                new() { RoomId = 2, Name = "Room 2", Capacity = 3, Image = "Image 2", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+                new() { RoomId = 3, Name = "Room 3", Capacity = 4, Image = "Image 3", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+            }
+        }
+    };
 }
