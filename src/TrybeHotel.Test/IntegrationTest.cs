@@ -75,10 +75,10 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
     public async Task TestGetCities(string url, IEnumerable<CityDto> expected)
     {
         var response = await _clientTest.GetAsync(url);
-        var content = await response.Content.ReadFromJsonAsync<IEnumerable<CityDto>>();
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<CityDto>>();
 
         System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
-        content.Should().BeEquivalentTo(expected);
+        resContent.Should().BeEquivalentTo(expected);
     }
 
     public static TheoryData<string, IEnumerable<CityDto>> DataTestGetCities => new()
