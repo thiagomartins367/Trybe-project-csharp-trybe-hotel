@@ -184,4 +184,25 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             }
         }
     };
+
+    [Trait("Category", "Route tests `/room`")]
+    [Theory(DisplayName = "Can add a room")]
+    [MemberData(nameof(DataTestPostRoom))]
+    public async Task TestPostRoom(string url, Room roomEntry, RoomDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, roomEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<RoomDto>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, Room, RoomDto> DataTestPostRoom => new()
+    {
+        {
+            "/room",
+            new Room() { Name = "Room 10", Capacity = 4, Image = "Image 10", HotelId = 3 },
+            new RoomDto() { RoomId = 10, Name = "Room 10", Capacity = 4, Image = "Image 10", Hotel = new HotelDto() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" } }
+        }
+    };
 }
