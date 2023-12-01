@@ -17,17 +17,6 @@ using System.Net.Http.Json;
 public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
 {
     public HttpClient _clientTest;
-    public static TheoryData<string, IEnumerable<CityDto>> TestGetCities => new()
-    {
-        {
-            "/city",
-            new List<CityDto>()
-            {
-                new() { CityId = 1, Name = "Manaus" },
-                new() { CityId = 2, Name = "Palmas" },
-            }
-        }
-    };
 
     public IntegrationTest(WebApplicationFactory<Program> factory)
     {
@@ -82,8 +71,8 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
 
     [Trait("Category", "Route tests '/city'")]
     [Theory(DisplayName = "Can get all cities")]
-    [MemberData(nameof(TestGetCities))]
-    public async Task TestGetAllCities(string url, IEnumerable<CityDto> expected)
+    [MemberData(nameof(DataTestGetCities))]
+    public async Task TestGetCities(string url, IEnumerable<CityDto> expected)
     {
         var response = await _clientTest.GetAsync(url);
         var content = await response.Content.ReadFromJsonAsync<IEnumerable<CityDto>>();
@@ -91,6 +80,18 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
         System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
         content.Should().BeEquivalentTo(expected);
     }
+
+    public static TheoryData<string, IEnumerable<CityDto>> DataTestGetCities => new()
+    {
+        {
+            "/city",
+            new List<CityDto>()
+            {
+                new() { CityId = 1, Name = "Manaus" },
+                new() { CityId = 2, Name = "Palmas" },
+            }
+        }
+    };
 
     [Trait("Category", "Route tests '/city'")]
     [Theory(DisplayName = "Can add a city")]
