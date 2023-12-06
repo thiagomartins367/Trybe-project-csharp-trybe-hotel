@@ -366,7 +366,6 @@ var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=Tr
 Você pode criar as tabelas do banco de dados atráves dos comandos `dotnet ef migrations add InitialCreate` e `dotnet ef database update`. Caso você execute esse comando, certifique-se de que o CLI do Entity Framework esteja instalado na sua máquina!
   </details>
 
-
 <br />
 
 **O que será testado:**

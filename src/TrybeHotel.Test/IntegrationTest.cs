@@ -2,6 +2,7 @@ namespace TrybeHotel.Test;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
+using TrybeHotel.Dto;
 using TrybeHotel.Models;
 using TrybeHotel.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -10,14 +11,14 @@ using System.Text.Json;
 using System.Diagnostics;
 using System.Xml;
 using System.IO;
-
-
+using FluentAssertions;
+using System.Net.Http.Json;
 
 public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
 {
-     public HttpClient _clientTest;
+    public HttpClient _clientTest;
 
-     public IntegrationTest(WebApplicationFactory<Program> factory)
+    public IntegrationTest(WebApplicationFactory<Program> factory)
     {
         //_factory = factory;
         _clientTest = factory.WithWebHostBuilder(builder => {
@@ -72,16 +73,153 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
             });
         }).CreateClient();
     }
- 
-    [Trait("Category", "Meus testes")]
-    [Theory(DisplayName = "Executando meus testes")]
-    [InlineData("/city")]
-    public async Task TestGet(string url)
+
+    [Trait("Category", "Route tests `/city`")]
+    [Theory(DisplayName = "Can get all cities")]
+    [MemberData(nameof(DataTestGetCities))]
+    public async Task TestGetCities(string url, IEnumerable<CityDto> expected)
     {
         var response = await _clientTest.GetAsync(url);
-        Assert.Equal(System.Net.HttpStatusCode.OK, response?.StatusCode);
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<CityDto>>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
     }
-   
-    
-    
+
+    public static TheoryData<string, IEnumerable<CityDto>> DataTestGetCities => new()
+    {
+        {
+            "/city",
+            new List<CityDto>()
+            {
+                new() { CityId = 1, Name = "Manaus" },
+                new() { CityId = 2, Name = "Palmas" },
+            }
+        }
+    };
+
+    [Trait("Category", "Route tests `/city`")]
+    [Theory(DisplayName = "Can add a city")]
+    [MemberData(nameof(DataTestPostCity))]
+    public async Task TestPostCity(string url, City cityEntry, CityDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, cityEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<CityDto>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, City, CityDto> DataTestPostCity => new()
+    {
+        {
+            "/city",
+            new City() { Name = "Guarulhos" },
+            new CityDto() { CityId = 3, Name = "Guarulhos" }
+        }
+    };
+
+    [Trait("Category", "Route tests `/hotel`")]
+    [Theory(DisplayName = "Can get all hotels")]
+    [MemberData(nameof(DataTestGetHotels))]
+    public async Task TestGetHotels(string url, IEnumerable<HotelDto> expected)
+    {
+        var response = await _clientTest.GetAsync(url);
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<HotelDto>>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, IEnumerable<HotelDto>> DataTestGetHotels => new()
+    {
+        {
+            "/hotel",
+            new List<HotelDto>()
+            {
+                new() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" },
+                new() { HotelId = 2, Name = "Trybe Hotel Palmas", Address = "Address 2", CityId = 2, CityName = "Palmas" },
+                new() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" },
+            }
+        }
+    };
+
+    [Trait("Category", "Route tests `/hotel`")]
+    [Theory(DisplayName = "Can add a hotel")]
+    [MemberData(nameof(DataTestPostHotel))]
+    public async Task TestPostHotel(string url, Hotel hotelEntry, HotelDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, hotelEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<HotelDto>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, Hotel, HotelDto> DataTestPostHotel => new()
+    {
+        {
+            "/hotel",
+            new Hotel() { Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1 },
+            new HotelDto() { HotelId = 4, Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1, CityName = "Manaus" }
+        }
+    };
+
+    [Trait("Category", "Route tests `/room`")]
+    [Theory(DisplayName = "Can get all rooms from a hotel")]
+    [MemberData(nameof(DataTestGetRoomsByHotelId))]
+    public async Task TestGetRoomsByHotelId(string url, IEnumerable<RoomDto> expected)
+    {
+        var response = await _clientTest.GetAsync(url);
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<RoomDto>>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, IEnumerable<RoomDto>> DataTestGetRoomsByHotelId => new()
+    {
+        {
+            "/room/1",
+            new List<RoomDto>()
+            {
+                new() { RoomId = 1, Name = "Room 1", Capacity = 2, Image = "Image 1", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+                new() { RoomId = 2, Name = "Room 2", Capacity = 3, Image = "Image 2", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+                new() { RoomId = 3, Name = "Room 3", Capacity = 4, Image = "Image 3", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+            }
+        }
+    };
+
+    [Trait("Category", "Route tests `/room`")]
+    [Theory(DisplayName = "Can add a room")]
+    [MemberData(nameof(DataTestPostRoom))]
+    public async Task TestPostRoom(string url, Room roomEntry, RoomDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, roomEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<RoomDto>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, Room, RoomDto> DataTestPostRoom => new()
+    {
+        {
+            "/room",
+            new Room() { Name = "Room 10", Capacity = 4, Image = "Image 10", HotelId = 3 },
+            new RoomDto() { RoomId = 10, Name = "Room 10", Capacity = 4, Image = "Image 10", Hotel = new HotelDto() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" } }
+        }
+    };
+
+    [Trait("Category", "Route tests `/room`")]
+    [Theory(DisplayName = "Can delete a room")]
+    [InlineData("/room/1")]
+    public async Task TestDeleteRoomById(string url)
+    {
+        var response = await _clientTest.DeleteAsync(url);
+        var resContent = await response.Content.ReadAsStringAsync();
+
+        System.Net.HttpStatusCode.NoContent.Should().Be(response?.StatusCode);
+        resContent.Length.Should().Be(0);
+    }
 }

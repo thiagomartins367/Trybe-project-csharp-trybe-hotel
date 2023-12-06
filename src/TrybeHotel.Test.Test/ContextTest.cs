@@ -22,7 +22,6 @@ public class ContextTest : DbContext, ITrybeHotelContext
         .WithOne(h => h.City)
         .HasForeignKey(h => h.CityId);
 
-
         modelBuilder.Entity<Hotel>()
         .HasMany(r => r.Rooms)
         .WithOne(h => h.Hotel)
