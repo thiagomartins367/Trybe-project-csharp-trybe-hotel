@@ -54,7 +54,13 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    
+    options.AddPolicy(
+        "Admin",
+        policy => policy
+            .RequireClaim(ClaimTypes.Role, "admin")
+            .RequireClaim(ClaimTypes.Email)
+    );
+    options.AddPolicy("Client", policy => policy.RequireClaim(ClaimTypes.Email));
 });
 
 var app = builder.Build();
@@ -66,7 +72,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 
