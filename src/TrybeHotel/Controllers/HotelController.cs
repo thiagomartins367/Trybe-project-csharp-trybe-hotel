@@ -32,7 +32,6 @@ namespace TrybeHotel.Controllers
         [Authorize(Policy = "Admin")]
         public IActionResult PostHotel([FromBody] Hotel hotel)
         {
-            Console.WriteLine(hotel.HotelId);
             var newHotel = _repository.AddHotel(hotel);
             return Created("", newHotel);
         }
