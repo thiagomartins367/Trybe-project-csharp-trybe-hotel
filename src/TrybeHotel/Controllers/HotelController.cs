@@ -28,6 +28,8 @@ namespace TrybeHotel.Controllers
 
         // 5. Desenvolva o endpoint POST /hotel
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "Admin")]
         public IActionResult PostHotel([FromBody] Hotel hotel)
         {
             Console.WriteLine(hotel.HotelId);
