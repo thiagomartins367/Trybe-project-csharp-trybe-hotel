@@ -26,7 +26,7 @@ namespace TrybeHotel.Repository
                 && user.Password == login.Password
             );
             if (user is null)
-                return new UserDto() { Name = "", Email = "", UserType = "" };
+                throw new KeyNotFoundException("User not found");
             return CopyEqualPropertiesFromUser(user, new UserDto(), new { });
         }
 
