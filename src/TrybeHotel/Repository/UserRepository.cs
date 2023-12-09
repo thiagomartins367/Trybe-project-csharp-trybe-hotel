@@ -27,21 +27,15 @@ namespace TrybeHotel.Repository
             );
             if (user is null)
                 throw new KeyNotFoundException("User not found");
-            return CopyEqualPropertiesFromUser(user, new UserDto(), new { });
+            return PassUserEntityToOutput(user);
         }
 
         public UserDto Add(UserDtoInsert user)
         {
-            var newUser = new User()
-            {
-                Name = user.Name,
-                Email = user.Email,
-                Password = user.Password,
-                UserType = "client",
-            };
+            User newUser = PassInputToUserEntity(user);
             _context.Users.Add(newUser);
             _context.SaveChanges();
-            return CopyEqualPropertiesFromUser(newUser, new UserDto(), new { });
+            return PassUserEntityToOutput(newUser);
         }
 
         public UserDto GetUserByEmail(string userEmail)
@@ -49,52 +43,36 @@ namespace TrybeHotel.Repository
             var user = _context.Users.FirstOrDefault(user => user.Email == userEmail);
             if (user is null)
                 throw new KeyNotFoundException("User not found");
-            return CopyEqualPropertiesFromUser(user, new UserDto(), null);
+            return PassUserEntityToOutput(user);
         }
 
         public IEnumerable<UserDto> GetUsers()
         {
             return _context.Users.Select(
-                user => CopyEqualPropertiesFromUser(user, new UserDto(), new { })
+                user => PassUserEntityToOutput(user)
             );
         }
 
-        private static T CopyEqualPropertiesFromUser<T>(
-            User user,
-            T expectedObject,
-            object? defaultValues
-        )
+        private static User PassInputToUserEntity(UserDtoInsert input)
         {
-            if (expectedObject is null) return expectedObject;
-            var expectedObjectCopied = FindAndCopyProperties(user, expectedObject, null);
-            expectedObjectCopied = FindAndCopyProperties(
-                user,
-                expectedObjectCopied,
-                defaultValues
-            );
-            return expectedObjectCopied;
-        }
-
-        private static T FindAndCopyProperties<T>(
-            User user,
-            T expectedObject,
-            object? defaultValues
-        )
-        {
-            var objectToIterate = defaultValues is null ? expectedObject : defaultValues;
-            if (objectToIterate is null) return expectedObject;
-            var userProperties = user.GetType().GetProperties();
-            foreach (var property in objectToIterate.GetType().GetProperties())
+            return new User
             {
-                var userProperty = userProperties
-                    .FirstOrDefault(
-                        propertyInfo => propertyInfo.Name == property.Name
-                        && propertyInfo.GetType() == property.GetType()
-                    );
-                if (userProperty is not null)
-                    property.SetValue(expectedObject, userProperty.GetValue(user));
-            }
-            return expectedObject;
+                Name = input.Name,
+                Email = input.Email,
+                Password = input.Password,
+                UserType = "client",
+            };
+        }
+
+        private static UserDto PassUserEntityToOutput(User user)
+        {
+            return new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                Email = user.Email,
+                UserType = user.UserType,
+            };
         }
     }
 }
