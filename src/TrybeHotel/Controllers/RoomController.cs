@@ -41,8 +41,15 @@ namespace TrybeHotel.Controllers
         [Authorize(Policy = "Admin")]
         public IActionResult Delete(int RoomId)
         {
-            _repository.DeleteRoom(RoomId);
-            return NoContent();
+            try
+            {
+                _repository.DeleteRoom(RoomId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException notFoundException)
+            {
+                return NotFound(new { notFoundException.Message });
+            }
         }
     }
 }
