@@ -36,8 +36,10 @@ namespace TrybeHotel.Repository
                 .Include(b => b.Room)
                 .ThenInclude(room => room!.Hotel)
                 .ThenInclude(hotel => hotel!.City)
-                .FirstOrDefault(b => b.BookingId == bookingId && b.UserId == user.UserId);
-            if (booking is null) return new BookingResponse();
+                .FirstOrDefault(b => b.BookingId == bookingId);
+            if (booking is null) throw new KeyNotFoundException("booking not found");
+            if (user.UserId != booking.UserId)
+                throw new UnauthorizedAccessException("booking not belong this user");
             return new BookingResponse()
             {
                 BookingId = booking.BookingId,
