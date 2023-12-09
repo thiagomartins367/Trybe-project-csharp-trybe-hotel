@@ -67,7 +67,7 @@ namespace TrybeHotel.Repository
         public Room GetRoomById(int RoomId)
         {
             var room = _context.Rooms.FirstOrDefault(r => r.RoomId == RoomId);
-            if (room is null) return new Room();
+            if (room is null) throw new KeyNotFoundException("Room not found");
             return room;
         }
 
