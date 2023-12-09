@@ -7,6 +7,7 @@ namespace TrybeHotel.Repository
     public class HotelRepository : IHotelRepository
     {
         protected readonly ITrybeHotelContext _context;
+
         public HotelRepository(ITrybeHotelContext context)
         {
             _context = context;
@@ -21,7 +22,7 @@ namespace TrybeHotel.Repository
                 Name = hotel.Name,
                 Address = hotel.Address,
                 CityId = hotel.CityId,
-                CityName = hotel.City != null ? hotel.City.Name : "",
+                CityName = hotel.City!.Name,
             });
         }
 
@@ -38,7 +39,7 @@ namespace TrybeHotel.Repository
                 Name = newHotel.Name,
                 Address = newHotel.Address,
                 CityId = newHotel.CityId,
-                CityName = newHotel.City != null ? newHotel.City.Name : "",
+                CityName = newHotel.City!.Name,
             };
         }
     }
