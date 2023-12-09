@@ -25,13 +25,19 @@ namespace TrybeHotel.Controllers
         [Authorize(Policy = "Client")]
         public IActionResult Add([FromBody] BookingDtoInsert bookingInsert)
         {
-            Room room = _repository.GetRoomById(bookingInsert.RoomId);
-            if (room.RoomId == 0) return NotFound(new { Message = "room not found" });
-            if (room.Capacity < bookingInsert.GuestQuant)
-                return BadRequest(new { Message = "Guest quantity over room capacity" });
-            string userEmail = GetUserEmailFromToken();
-            BookingResponse newBooking = _repository.Add(bookingInsert, userEmail);
-            return Created("GetBooking", newBooking);
+            try
+            {
+                Room room = _repository.GetRoomById(bookingInsert.RoomId);
+                if (room.Capacity < bookingInsert.GuestQuant)
+                    return BadRequest(new { Message = "Guest quantity over room capacity" });
+                string userEmail = GetUserEmailFromToken();
+                BookingResponse newBooking = _repository.Add(bookingInsert, userEmail);
+                return Created("GetBooking", newBooking);
+            }
+            catch (KeyNotFoundException notFoundException)
+            {
+                return NotFound(new { notFoundException.Message });
+            }
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
