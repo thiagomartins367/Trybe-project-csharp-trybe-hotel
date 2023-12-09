@@ -56,7 +56,9 @@ namespace TrybeHotel.Repository
         // 8. Desenvolva o endpoint DELETE /room/:roomId
         public void DeleteRoom(int RoomId)
         {
-            var room = _context.Rooms.First(r => r.RoomId == RoomId);
+            var room = _context.Rooms.FirstOrDefault(r => r.RoomId == RoomId);
+            if (room is null)
+                throw new KeyNotFoundException("Room not found");
             _context.Rooms.Remove(room);
             _context.SaveChanges();
         }
