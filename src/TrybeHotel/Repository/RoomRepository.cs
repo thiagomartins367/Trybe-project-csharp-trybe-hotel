@@ -7,6 +7,7 @@ namespace TrybeHotel.Repository
     public class RoomRepository : IRoomRepository
     {
         protected readonly ITrybeHotelContext _context;
+
         public RoomRepository(ITrybeHotelContext context)
         {
             _context = context;
@@ -32,10 +33,14 @@ namespace TrybeHotel.Repository
         }
 
         // 6. Desenvolva o endpoint GET /room/:hotelId
-        public IEnumerable<RoomDto> GetRooms(int HotelId)
+        public IEnumerable<RoomDto> GetRooms(int hotelId)
         {
+            var hotel = _context.Hotels
+                .FirstOrDefault(hotel => hotel.HotelId == hotelId);
+            if (hotel is null)
+                throw new KeyNotFoundException("Hotel not found");
             return _context.Rooms
-                .Where(room => room.HotelId == HotelId)
+                .Where(room => room.HotelId == hotelId)
                 .Include(room => room.Hotel)
                 .ThenInclude(hotel => hotel!.City)
                 .Select(room => GetRoomDto(room));
