@@ -58,7 +58,9 @@ namespace TrybeHotel.Repository
 
         public IEnumerable<UserDto> GetUsers()
         {
-            throw new NotImplementedException();
+            return _context.Users.Select(
+                user => CopyEqualPropertiesFromUser(user, new UserDto(), new { })
+            );
         }
 
         private static T CopyEqualPropertiesFromUser<T>(
