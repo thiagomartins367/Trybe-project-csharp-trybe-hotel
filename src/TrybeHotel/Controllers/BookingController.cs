@@ -29,17 +29,38 @@ namespace TrybeHotel.Controllers
             if (room.RoomId == 0) return NotFound(new { Message = "room not found" });
             if (room.Capacity < bookingInsert.GuestQuant)
                 return BadRequest(new { Message = "Guest quantity over room capacity" });
-            var userTokenClaims = HttpContext.User.Identity as ClaimsIdentity;
-            string userEmail = userTokenClaims!.Claims
-                .First(claim => claim.Type == ClaimTypes.Email).Value;
+            string userEmail = GetUserEmailFromToken();
             BookingResponse newBooking = _repository.Add(bookingInsert, userEmail);
             return Created("GetBooking", newBooking);
         }
 
-        [HttpGet("{Bookingid}")]
-        public IActionResult GetBooking(int Bookingid)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "Client")]
+        [HttpGet("{BookingId}")]
+        public IActionResult GetBooking(int bookingId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userEmail = GetUserEmailFromToken();
+                var booking = _repository.GetBooking(bookingId, userEmail);
+                return Ok(booking);
+            }
+            catch (KeyNotFoundException notFoundException)
+            {
+                return NotFound(new { notFoundException.Message });
+            }
+            catch (UnauthorizedAccessException UnauthorizedException)
+            {
+                return Unauthorized(new { UnauthorizedException.Message });
+            }
+        }
+
+        private string GetUserEmailFromToken()
+        {
+            var userTokenClaims = HttpContext.User.Identity as ClaimsIdentity;
+            string userEmail = userTokenClaims!.Claims
+                .First(claim => claim.Type == ClaimTypes.Email).Value;
+            return userEmail;
         }
     }
 }
