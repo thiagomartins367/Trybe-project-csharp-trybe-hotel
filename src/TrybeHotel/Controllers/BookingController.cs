@@ -38,6 +38,10 @@ namespace TrybeHotel.Controllers
             {
                 return NotFound(new { notFoundException.Message });
             }
+            catch (UnauthorizedAccessException unauthorizedException)
+            {
+                return Unauthorized(new { unauthorizedException.Message });
+            }
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
