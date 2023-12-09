@@ -12,6 +12,7 @@ namespace TrybeHotel.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomRepository _repository;
+
         public RoomController(IRoomRepository repository)
         {
             _repository = repository;
@@ -21,8 +22,15 @@ namespace TrybeHotel.Controllers
         [HttpGet("{HotelId}")]
         public IActionResult GetRoom(int HotelId)
         {
-            var rooms = _repository.GetRooms(HotelId);
-            return Ok(rooms);
+            try
+            {
+                var rooms = _repository.GetRooms(HotelId);
+                return Ok(rooms);
+            }
+            catch (KeyNotFoundException notFoundException)
+            {
+                return NotFound(new { notFoundException.Message });
+            }
         }
 
         // 7. Desenvolva o endpoint POST /room
