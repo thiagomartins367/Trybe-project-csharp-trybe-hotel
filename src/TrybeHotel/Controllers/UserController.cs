@@ -38,9 +38,15 @@ namespace TrybeHotel.Controllers
 
         private bool UserExists(UserDtoInsert user)
         {
-            UserDto existingUser = _repository.GetUserByEmail(user.Email);
-            if (existingUser.Email == user.Email) return true;
-            return false;
+            try
+            {
+                UserDto existingUser = _repository.GetUserByEmail(user.Email);
+                return true;
+            }
+            catch (KeyNotFoundException)
+            {
+                return false;
+            }
         }
     }
 }
