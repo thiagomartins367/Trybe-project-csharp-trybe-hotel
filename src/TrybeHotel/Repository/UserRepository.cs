@@ -48,11 +48,7 @@ namespace TrybeHotel.Repository
         {
             var user = _context.Users.FirstOrDefault(user => user.Email == userEmail);
             if (user is null)
-                return CopyEqualPropertiesFromUser(
-                    new User() { Email = "" },
-                    new UserDto(),
-                    null
-                );
+                throw new KeyNotFoundException("User not found");
             return CopyEqualPropertiesFromUser(user, new UserDto(), null);
         }
 
