@@ -345,4 +345,54 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
         System.Net.HttpStatusCode.NoContent.Should().Be(response?.StatusCode);
         resContent.Length.Should().Be(0);
     }
+
+    [Trait("Category", "Route tests `/booking`")]
+    [Theory(DisplayName = "Can add a booking")]
+    [MemberData(nameof(DataTestPostBooking))]
+    public async Task TestPostBooking(
+        string url,
+        BookingDtoInsert bookingEntry,
+        BookingResponse expected
+    )
+    {
+        await SignInForDefaultUser();
+        var AuthorizationToken = TokenByUserType?[UserType.Client]?.ToString();
+        SetAuthorizationTokenOnClient(AuthorizationToken);
+
+        var response = await _clientTest.PostAsJsonAsync(url, bookingEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<BookingResponse>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, BookingDtoInsert, BookingResponse> DataTestPostBooking => new()
+    {
+        {
+            "/booking",
+            new BookingDtoInsert() { CheckIn = DateTime.Parse("2030-08-10"), CheckOut = DateTime.Parse("2030-08-17"), GuestQuant = 2, RoomId = 1 },
+            new BookingResponse()
+            {
+                BookingId = 3,
+                CheckIn = DateTime.Parse("2030-08-10"),
+                CheckOut = DateTime.Parse("2030-08-17"),
+                GuestQuant = 2,
+                Room = new RoomDto()
+                {
+                    RoomId = 1,
+                    Name = "Room 1",
+                    Capacity = 2,
+                    Image = "Image 1",
+                    Hotel = new HotelDto()
+                    {
+                        HotelId = 1,
+                        Name = "Trybe Hotel Manaus",
+                        Address = "Address 1",
+                        CityId = 1,
+                        CityName = "Manaus",
+                    }
+                },
+            }
+        }
+    };
 }
