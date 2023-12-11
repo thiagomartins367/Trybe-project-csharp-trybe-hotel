@@ -74,6 +74,31 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
         }).CreateClient();
     }
 
+    [Trait("Category", "Route tests `/login`")]
+    [Theory(DisplayName = "Can sign in")]
+    [MemberData(nameof(DataTestPostLogin))]
+    public async Task TestPostLogin(string url, LoginDto loginEntry)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, loginEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<AccessTokenResponse>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeOfType<AccessTokenResponse>();
+        resContent?.Token.Split('.').Length.Should().Be(3);
+    }
+
+    public static TheoryData<string, LoginDto> DataTestPostLogin => new()
+    {
+        {
+            "/login",
+            new LoginDto()
+            {
+                Email = "ana@trybehotel.com",
+                Password = "Senha1",
+            }
+        }
+    };
+
     [Trait("Category", "Route tests `/city`")]
     [Theory(DisplayName = "Can get all cities")]
     [MemberData(nameof(DataTestGetCities))]
