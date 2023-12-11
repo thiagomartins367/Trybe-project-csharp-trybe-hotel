@@ -13,6 +13,7 @@ using System.Xml;
 using System.IO;
 using FluentAssertions;
 using System.Net.Http.Json;
+using System.Net.Http.Headers;
 
 public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
 {
@@ -72,6 +73,20 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
                 }
             });
         }).CreateClient();
+    }
+
+    private async Task<string> SignInForDefaultUser(bool adminUser)
+    {
+        LoginDto requestBody;
+        if (adminUser)
+            requestBody = new LoginDto() { Email = "ana@trybehotel.com", Password = "Senha1" };
+        else
+            requestBody = new LoginDto() { Email = "laura@trybehotel.com", Password = "Senha3" };
+        var response = await _clientTest.PostAsJsonAsync("/login", requestBody);
+        var resContent = await response.Content.ReadFromJsonAsync<AccessTokenResponse>();
+        _clientTest.DefaultRequestHeaders
+            .Authorization = new AuthenticationHeaderValue("Bearer", resContent!.Token);
+        return resContent!.Token;
     }
 
     [Trait("Category", "Route tests `/login`")]
@@ -174,11 +189,15 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     [MemberData(nameof(DataTestPostHotel))]
     public async Task TestPostHotel(string url, Hotel hotelEntry, HotelDto expected)
     {
+        await SignInForDefaultUser(true);
+
         var response = await _clientTest.PostAsJsonAsync(url, hotelEntry);
         var resContent = await response.Content.ReadFromJsonAsync<HotelDto>();
 
         System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
         resContent.Should().BeEquivalentTo(expected);
+
+        _clientTest.DefaultRequestHeaders.Authorization = null;
     }
 
     public static TheoryData<string, Hotel, HotelDto> DataTestPostHotel => new()
@@ -220,11 +239,15 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     [MemberData(nameof(DataTestPostRoom))]
     public async Task TestPostRoom(string url, Room roomEntry, RoomDto expected)
     {
+        await SignInForDefaultUser(true);
+
         var response = await _clientTest.PostAsJsonAsync(url, roomEntry);
         var resContent = await response.Content.ReadFromJsonAsync<RoomDto>();
 
         System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
         resContent.Should().BeEquivalentTo(expected);
+
+        _clientTest.DefaultRequestHeaders.Authorization = null;
     }
 
     public static TheoryData<string, Room, RoomDto> DataTestPostRoom => new()
@@ -241,10 +264,14 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
     [InlineData("/room/1")]
     public async Task TestDeleteRoomById(string url)
     {
+        await SignInForDefaultUser(true);
+
         var response = await _clientTest.DeleteAsync(url);
         var resContent = await response.Content.ReadAsStringAsync();
 
         System.Net.HttpStatusCode.NoContent.Should().Be(response?.StatusCode);
         resContent.Length.Should().Be(0);
+
+        _clientTest.DefaultRequestHeaders.Authorization = null;
     }
 }
