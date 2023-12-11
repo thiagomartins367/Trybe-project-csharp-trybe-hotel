@@ -163,6 +163,27 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
         }
     };
 
+    [Trait("Category", "Route tests `/user`")]
+    [Theory(DisplayName = "Can add a user")]
+    [MemberData(nameof(DataTestPostUser))]
+    public async Task TestPostUser(string url, UserDtoInsert userEntry, UserDto expected)
+    {
+        var response = await _clientTest.PostAsJsonAsync(url, userEntry);
+        var resContent = await response.Content.ReadFromJsonAsync<UserDto>();
+
+        System.Net.HttpStatusCode.Created.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, UserDtoInsert, UserDto> DataTestPostUser => new()
+    {
+        {
+            "/user",
+            new UserDtoInsert() { Name = "Gabriel", Email = "gabriel@trybehotel.com", Password = "Senha4" },
+            new UserDto() { UserId = 4, Name = "Gabriel", Email = "gabriel@trybehotel.com", UserType = UserType.Client.ToString().ToLower() }
+        }
+    };
+
     [Trait("Category", "Route tests `/city`")]
     [Theory(DisplayName = "Can get all cities")]
     [MemberData(nameof(DataTestGetCities))]
