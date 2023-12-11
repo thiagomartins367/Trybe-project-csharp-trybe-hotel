@@ -134,6 +134,35 @@ public class IntegrationTest: IClassFixture<WebApplicationFactory<Program>>
         }
     };
 
+    [Trait("Category", "Route tests `/user`")]
+    [Theory(DisplayName = "Can get all users")]
+    [MemberData(nameof(DataTestGetUsers))]
+    public async Task TestGetUsers(string url, IEnumerable<UserDto> expected)
+    {
+        await SignInForDefaultUser();
+        var AuthorizationToken = TokenByUserType?[UserType.Admin]?.ToString();
+        SetAuthorizationTokenOnClient(AuthorizationToken);
+
+        var response = await _clientTest.GetAsync(url);
+        var resContent = await response.Content.ReadFromJsonAsync<IEnumerable<UserDto>>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, IEnumerable<UserDto>> DataTestGetUsers => new()
+    {
+        {
+            "/user",
+            new List<UserDto>()
+            {
+                new() { UserId = 1, Name = "Ana", Email = "ana@trybehotel.com", UserType = "admin" },
+                new() { UserId = 2, Name = "Beatriz", Email = "beatriz@trybehotel.com", UserType = "client" },
+                new() { UserId = 3, Name = "Laura", Email = "laura@trybehotel.com", UserType = "client" },
+            }
+        }
+    };
+
     [Trait("Category", "Route tests `/city`")]
     [Theory(DisplayName = "Can get all cities")]
     [MemberData(nameof(DataTestGetCities))]
