@@ -395,4 +395,49 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             }
         }
     };
+
+    [Trait("Category", "Route tests `/booking`")]
+    [Theory(DisplayName = "Can get booking")]
+    [MemberData(nameof(DataTestGetBooking))]
+    public async Task TestGetBooking(string url, BookingResponse expected)
+    {
+        await SignInForDefaultUser();
+        var AuthorizationToken = TokenByUserType?[UserType.Client]?.ToString();
+        SetAuthorizationTokenOnClient(AuthorizationToken);
+
+        var response = await _clientTest.GetAsync(url);
+        var resContent = await response.Content.ReadFromJsonAsync<BookingResponse>();
+
+        System.Net.HttpStatusCode.OK.Should().Be(response?.StatusCode);
+        resContent.Should().BeEquivalentTo(expected);
+    }
+
+    public static TheoryData<string, BookingResponse> DataTestGetBooking => new()
+    {
+        {
+            "/booking/2",
+            new BookingResponse()
+            {
+                BookingId = 2,
+                CheckIn = new DateTime(2023, 07, 02),
+                CheckOut = new DateTime(2023, 07, 03),
+                GuestQuant = 1,
+                Room = new RoomDto()
+                {
+                    RoomId = 4,
+                    Name = "Room 4",
+                    Capacity = 2,
+                    Image = "Image 4",
+                    Hotel = new HotelDto()
+                    {
+                        HotelId = 2,
+                        Name = "Trybe Hotel Palmas",
+                        Address = "Address 2",
+                        CityId = 2,
+                        CityName = "Palmas",
+                    }
+                },
+            }
+        }
+    };
 }
