@@ -12,25 +12,49 @@ namespace TrybeHotel.Controllers
     public class RoomController : Controller
     {
         private readonly IRoomRepository _repository;
+
         public RoomController(IRoomRepository repository)
         {
             _repository = repository;
         }
 
         [HttpGet("{HotelId}")]
-        public IActionResult GetRoom(int HotelId){
-            throw new NotImplementedException();
+        public IActionResult GetRoom(int HotelId)
+        {
+            try
+            {
+                var rooms = _repository.GetRooms(HotelId);
+                return Ok(rooms);
+            }
+            catch (KeyNotFoundException notFoundException)
+            {
+                return NotFound(new { notFoundException.Message });
+            }
         }
 
         [HttpPost]
-        public IActionResult PostRoom([FromBody] Room room){
-            throw new NotImplementedException();
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "Admin")]
+        public IActionResult PostRoom([FromBody] Room room)
+        {
+            var newRoom = _repository.AddRoom(room);
+            return Created("", newRoom);
         }
 
         [HttpDelete("{RoomId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "Admin")]
         public IActionResult Delete(int RoomId)
         {
-             throw new NotImplementedException();
+            try
+            {
+                _repository.DeleteRoom(RoomId);
+                return NoContent();
+            }
+            catch (KeyNotFoundException notFoundException)
+            {
+                return NotFound(new { notFoundException.Message });
+            }
         }
     }
 }

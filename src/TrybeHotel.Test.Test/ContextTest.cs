@@ -12,8 +12,8 @@ public class ContextTest : DbContext, ITrybeHotelContext
     public virtual DbSet<Room> Rooms { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Booking> Bookings { get; set; }
-    public ContextTest(DbContextOptions<ContextTest> options) : base(options)
-    { }
+
+    public ContextTest(DbContextOptions<ContextTest> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,7 +21,6 @@ public class ContextTest : DbContext, ITrybeHotelContext
         .HasMany(c => c.Hotels)
         .WithOne(h => h.City)
         .HasForeignKey(h => h.CityId);
-
 
         modelBuilder.Entity<Hotel>()
         .HasMany(r => r.Rooms)

@@ -907,7 +907,6 @@ Em caso de dúvidas, consulte o [diagrama de entidade-relacionamento](#der)
 </details>
 
 
-
 <details>
   <summary><strong>🗣 Nos dê feedbacks sobre o projeto!</strong></summary><br />
 
