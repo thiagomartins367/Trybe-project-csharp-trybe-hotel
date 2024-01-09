@@ -41,6 +41,7 @@ namespace TrybeHotel.Repository
                 Address = newHotel.Address,
                 CityId = newHotel.CityId,
                 CityName = newHotel.City!.Name,
+                State = newHotel.City!.State,
             };
         }
     }
