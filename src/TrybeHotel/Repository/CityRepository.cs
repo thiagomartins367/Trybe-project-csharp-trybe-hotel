@@ -16,7 +16,7 @@ namespace TrybeHotel.Repository
         public IEnumerable<CityDto> GetCities()
         {
             return _context.Cities.Select(
-                city => new CityDto() { CityId = city.CityId, Name = city.Name }
+                city => new CityDto() { CityId = city.CityId, Name = city.Name, State = city.State }
             );
         }
 
