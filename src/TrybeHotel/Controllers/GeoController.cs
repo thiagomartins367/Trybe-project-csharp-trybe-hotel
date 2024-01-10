@@ -4,7 +4,6 @@ using TrybeHotel.Repository;
 using TrybeHotel.Dto;
 using TrybeHotel.Services;
 
-
 namespace TrybeHotel.Controllers
 {
     [ApiController]
@@ -13,7 +12,6 @@ namespace TrybeHotel.Controllers
     {
         private readonly IHotelRepository _repository;
         private readonly IGeoService _geoService;
-
 
         public GeoController(IHotelRepository repository, IGeoService geoService)
         {
@@ -26,7 +24,8 @@ namespace TrybeHotel.Controllers
         [Route("status")]
         public async Task<IActionResult> GetStatus()
         {
-            throw new NotImplementedException();
+            var externalApiContent = await _geoService.GetGeoStatus();
+            return Ok(externalApiContent);
         }
 
         // 12. Desenvolva o endpoint GET /geo/address
@@ -37,6 +36,4 @@ namespace TrybeHotel.Controllers
             throw new NotImplementedException();
         }
     }
-
-
 }
