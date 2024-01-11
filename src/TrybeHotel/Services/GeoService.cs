@@ -20,11 +20,18 @@ namespace TrybeHotel.Services
         // 11. Desenvolva o endpoint GET /geo/status
         public async Task<object?> GetGeoStatus()
         {
-            var response = await _client.GetAsync("/status.php?format=json");
-            if (!response.IsSuccessStatusCode)
-                return default(Object);
-            var resContent = await response.Content.ReadFromJsonAsync<object>();
-            return resContent;
+            try
+            {
+                var response = await _client.GetAsync("/status?format=json");
+                if (!response.IsSuccessStatusCode)
+                    return default(Object);
+                var resContent = await response.Content.ReadFromJsonAsync<object>();
+                return resContent;
+            }
+            catch (Exception)
+            {
+                return new { Message = $"Failed when trying to communicate with \"{_baseUrl}\"" };
+            }
         }
 
         // 12. Desenvolva o endpoint GET /geo/address
