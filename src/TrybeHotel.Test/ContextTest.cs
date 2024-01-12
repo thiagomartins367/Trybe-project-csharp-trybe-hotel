@@ -12,7 +12,6 @@ public class ContextTest : DbContext, ITrybeHotelContext
     public virtual DbSet<Room> Rooms { get; set; }
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<Booking> Bookings { get; set; }
-    public ContextTest(DbContextOptions<ContextTest> options) : base(options)
-    { }
 
+    public ContextTest(DbContextOptions<ContextTest> options) : base(options) { }
 }
