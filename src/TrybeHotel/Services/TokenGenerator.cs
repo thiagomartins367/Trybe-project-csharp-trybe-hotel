@@ -14,10 +14,13 @@ namespace TrybeHotel.Services
 
         public TokenGenerator()
         {
+            var envSecretKey = Environment.GetEnvironmentVariable("AUTH_TOKEN_SECRET_KEY");
+            var envExpiresDay = Environment.GetEnvironmentVariable("AUTH_TOKEN_EXPIRE_DAYS");
+            var expiresDayIsNumber = int.TryParse(envExpiresDay, out int expiresDay);
             _tokenOptions = new TokenOptions
             {
-                Secret = "4d82a63bbdc67c1e4784ed6587f3730c",
-                ExpiresDay = 1,
+                Secret = envSecretKey is not null ? envSecretKey : "",
+                ExpiresDay = expiresDayIsNumber ? expiresDay : 7,
             };
         }
 
