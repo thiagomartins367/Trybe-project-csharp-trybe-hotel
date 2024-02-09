@@ -15,13 +15,20 @@ public class TrybeHotelContext : DbContext, ITrybeHotelContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var connectionString = Environment.GetEnvironmentVariable("DOTNET_CONNECTION_STRING");
-        if (connectionString == null || connectionString.Length == 0)
-        {
-            connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
-        }
+        var connectionString = GetConnectionString();
         optionsBuilder.UseSqlServer(connectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) { }
+
+    private static string GetConnectionString()
+    {
+        var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
+        var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+        var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+        var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+        var connectionStringFirstPart = $"Server={dbServer};Database={dbName}";
+        var connectionStringSecondPart = $"User={dbUser};Password={dbPassword}";
+        return $"{connectionStringFirstPart};{connectionStringSecondPart};TrustServerCertificate=True";
+    }
 }
