@@ -341,20 +341,3 @@ Após clonar o repositório deste projeto, apenas copie e cole as funcionalidade
 
 
 </details>
-
-<details>
-  <summary><strong>🗣 Nos dê feedbacks sobre o projeto!</strong></summary><br />
-
-Ao finalizar e submeter o projeto, não se esqueça de avaliar sua experiência preenchendo o formulário. 
-**Leva menos de 3 minutos!**
-
-[FORMULÁRIO DE AVALIAÇÃO DE PROJETO](https://be-trybe.typeform.com/to/ZTeR4IbH#cohort_hidden=CH1&template=betrybe/csharp-0x-projeto-trybe-hotel-fase-d)
-
-</details>
-
-<details>
-  <summary><strong>🗂 Compartilhe seu portfólio!</strong></summary><br />
-
-  Você sabia que o LinkedIn é a principal rede social profissional e que compartilhar aprendizados lá é muito importante para quem deseja construir uma carreira de sucesso? Compartilhe este projeto no seu LinkedIn, marque o perfil da Trybe (@trybe) e mostre para a sua rede toda a sua evolução.
-
-</details>
