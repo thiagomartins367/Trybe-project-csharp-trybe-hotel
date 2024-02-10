@@ -9,8 +9,10 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var port = builder.Configuration["PORT"];
+builder.WebHost.UseUrls($"http://*:{port}");
 
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<TrybeHotelContext>();
 builder.Services.AddScoped<ITrybeHotelContext, TrybeHotelContext>();
