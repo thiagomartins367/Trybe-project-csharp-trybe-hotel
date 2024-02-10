@@ -1,0 +1,10 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS entity-framework
+
+WORKDIR /usr/src/entity-framework
+
+COPY . ./
+
+RUN dotnet restore
+
+ENTRYPOINT dotnet tool restore \
+&& while true; do echo "✅ Ready to run Entity Framework!"; sleep 86400; done;
