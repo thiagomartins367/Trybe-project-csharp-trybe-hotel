@@ -13,6 +13,7 @@ services:
       - 5057:5057
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - PORT=5057
       - DB_SERVER=dev_db-trybe-hotel
       - DB_NAME=TrybeHotel
       - DB_USER=SA
