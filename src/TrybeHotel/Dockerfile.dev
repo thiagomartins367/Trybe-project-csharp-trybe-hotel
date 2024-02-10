@@ -13,4 +13,4 @@ RUN dotnet restore
 RUN dotnet restore ./.entity-framework
 
 ENTRYPOINT dotnet tool restore \
-&& dotnet watch run --project ./TrybeHotel.csproj --urls "http://*:5057"
+&& dotnet watch run --project ./TrybeHotel.csproj
