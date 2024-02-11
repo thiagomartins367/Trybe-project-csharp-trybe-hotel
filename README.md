@@ -47,7 +47,7 @@ docker image rm entity-framework-trybe-hotel
 ⚠️ É necessário ter instalado o [.NET Framework](https://dotnet.microsoft.com/pt-br) (Windows) ou [.NET Core](https://dotnet.microsoft.com/pt-br/) (Linux/ Mac) em sua máquina para executar a API.
 
 ⚠️ É nescessário possuir o [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) instalado e configurado ou possuir o mesmo em nuvem para que a aplicação possa se conectar e manipular os dados.
-- O SQL Server só funciona no sistema operacional Windows, para que ele possa ser usado em outro SO será nescessário utilizar o Docker para isso.
+- O SQL Server só funciona no sistema operacional Windows, para que ele possa ser usado em outro SO será nescessário utilizar o Docker como ambiente de execução do banco de dados.
 
 ⚠️ É nescessário instalar também o [CLI do Entity Framework](https://www.nuget.org/packages/dotnet-ef) em sua máquina para que seja possível manipular o banco de dados.
 
