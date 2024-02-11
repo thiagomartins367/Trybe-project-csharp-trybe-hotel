@@ -16,7 +16,7 @@ Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https:/
 docker-compose -f docker-compose.prod.yml up -d
 ```
 - Após esse processo a API estará executando no container `trybe-hotel`, o banco de dados no `db-trybe-hotel` e um container auxiliar também será iniciado para executar alguns comandos nescessários do _Entity Framework (EF)_ antes de começar a utilizar a aplicação.
-<br>
+<br />
 
 2. Em seguida acesse o CLI do container `entity-framework-trybe-hotel` e execute os seguintes comandos:
 - Visualizar _Migrations_ pendentes
@@ -28,7 +28,7 @@ dotnet ef migrations list
 ```
 dotnet ef database update
 ```
-<br/>
+<br />
 
 3. Após todo esse processo o banco de dados, bem como suas tabelas, estarão criados e prontos. A partir desse momento o container `entity-framework-trybe-hotel` não será mais nescessário, logo, ele pode ser removido com o comando:
 ```
@@ -41,15 +41,17 @@ docker image rm entity-framework-trybe-hotel
 ```
 
 - Caso precise executar novos comandos do _Entity Framework (EF)_ no ambiente de produção utilize esse container podendo removê-lo logo em seguida, ou não, sempre que nescessário. 
-<br/>
+<br />
 
 ## Instalação e Uso 🖥️
+❌ Para que as variáveis de ambiente possam ser reconhecidas fora do ambiente Docker é nescessário criar uma lógica na API para ler e definir essas variáveis do arquivo `.env.production.local`
+
 ⚠️ É necessário ter instalado o [.NET Framework](https://dotnet.microsoft.com/pt-br) (Windows) ou [.NET Core](https://dotnet.microsoft.com/pt-br/) (Linux/ Mac) em sua máquina para executar a API.
 
 ⚠️ É nescessário possuir o [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) instalado e configurado ou possuir o mesmo em nuvem para que a aplicação possa se conectar e manipular os dados.
 - O SQL Server só funciona no sistema operacional Windows, para que ele possa ser usado em outro SO será nescessário utilizar o Docker como ambiente de execução do banco de dados.
 
-⚠️ É nescessário instalar também o [CLI do Entity Framework](https://www.nuget.org/packages/dotnet-ef) em sua máquina para que seja possível manipular o banco de dados.
+⚠️ É nescessário instalar também o [CLI do Entity Framework](https://www.nuget.org/packages/dotnet-ef) em sua máquina para executar as _Migrations_ do banco de dados.
 
 **Na raiz do projeto execute os comandos abaixo no seu terminal:**
 
@@ -57,11 +59,26 @@ docker image rm entity-framework-trybe-hotel
 ```
 dotnet restore ./src
 ```
+<br />
 
-2. Execute a aplicação
+2. Execute os seguintes comandos do _Entity Framework (EF)_:
+- Visualizar _Migrations_ pendentes
 ```
-dotnet run --project ./src/TrybeGames/TrybeGames.csproj
+dotnet ef migrations list
 ```
+
+- Criar e/ou atualizar o banco de dados com as _Migrations_ pendentes
+```
+dotnet ef database update
+```
+<br />
+
+3. Execute a aplicação
+- ⚠️ Certifique-se de que o banco de dados, bem como suas tabelas, estejam criados.
+```
+dotnet run --project ./src/TrybeHotel/TrybeHotel.csproj
+```
+<br />
 
 ## Desenvolvimento 🧑‍💻
 Para desenvolver novos recursos ou refatorar é recomendado o uso do [Docker](https://www.docker.com) e do [Docker compose](https://docs.docker.com/compose/install), pois eles fornecem um ambiente isolado e devidamente configurado no arquivo `docker-compose.dev.yml`.
@@ -87,7 +104,7 @@ docker-compose -f docker-compose.dev.yml up -d
 
 <details>
   <summary><strong>:open_file_folder: Divisão da aplicação</strong></summary>
-  <br/>
+  <br />
 
 O sistema está dividido em diretórios específicos para auxiliar na organização e desenvolvimento do projeto.
 
@@ -104,13 +121,13 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
 <br />
 
 - `Services`: Este diretório armazena os serviços responsáveis pela geração de token e pelo serviço de geolocalização.
-<br/>
+<br />
 
 </details>
 
 <details>
   <summary><strong>🎲 Banco de Dados</strong></summary>
-  <br/>
+  <br />
 
   Esse projeto conta com o *Diagrama de Entidade-Relacionamento (DER)* usado na modelagem do banco de dados.
     
