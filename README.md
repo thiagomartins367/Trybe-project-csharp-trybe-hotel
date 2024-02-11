@@ -2,17 +2,92 @@
 
 Boas-vindas ao repositório do projeto `Trybe Hotel`
 
-Nesse projeto foi desenvolvido uma API de booking de várias redes de hotéis, trata-se de um software completo contando com recurso de autenticação e autorização por token, reserva de quartos, CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de geolocalização sendo possível obter os hotéis mais próximos de um determinado endereço, consumindo dados da API [nominatim](https://nominatim.org/release-docs/latest)
+Nesse projeto foi desenvolvido uma **API de booking** de várias redes de hotéis, trata-se de um software completo contando com recurso de autenticação e autorização por token, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de geolocalização sendo possível obter os hotéis mais próximos de um determinado endereço, consumindo dados da API [nominatim](https://nominatim.org/release-docs/latest).
 
 Desenvolvido durante o período de **Aceleração C#** da Trybe 🚀
 
 Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento do requisitos solicitados!
 
-## Requisitos do projeto
+## Uso no Docker 🐋
+Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https://docs.docker.com/compose/install) instalados, você pode economizar muito trabalho na configuração do ambiente de produção.
 
-Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
+1. Para iniciar todo o ambiente de produção no Docker execute o comando:
+```
+docker-compose -f docker-compose.prod.yml up -d
+```
+- Após esse processo a API estará executando no container `trybe-hotel`, o banco de dados no `db-trybe-hotel` e um container auxiliar também será iniciado para executar alguns comandos nescessários do _Entity Framework (EF)_ antes de começar a utilizar a aplicação.
+<br>
 
-Na primeira fase deste projeto, você desenvolveu algumas rotas de entidades acerca de cidades, hotéis e quartos. Na segunda fase, você construiu rotas para o cadastro e login de pessoas clientes e o cadastro de reservas. Na terceira fase, você adicionou novas funcionalidades em rotas e adicionou serviços externos. **Agora, você irá desenvolver uma funcionalidade preparar a sua aplicação para deploy.**
+2. Em seguida acesse o CLI do container `entity-framework-trybe-hotel` e execute os seguintes comandos:
+- Visualizar _Migrations_ pendentes
+```
+dotnet ef migrations list
+```
+
+- Criar e/ou atualizar o banco de dados com as _Migrations_ pendentes
+```
+dotnet ef database update
+```
+<br/>
+
+3. Após todo esse processo o banco de dados, bem como suas tabelas, estarão criados e prontos. A partir desse momento o container `entity-framework-trybe-hotel` não será mais nescessário, logo, ele pode ser removido com o comando:
+```
+docker rm -fv entity-framework-trybe-hotel
+```
+
+- Para remover a imagem execute:
+```
+docker image rm entity-framework-trybe-hotel
+```
+
+- Caso precise executar novos comandos do _Entity Framework (EF)_ no ambiente de produção utilize esse container podendo removê-lo logo em seguida, ou não, sempre que nescessário. 
+<br/>
+
+## Instalação e Uso 🖥️
+⚠️ É necessário ter instalado o [.NET Framework](https://dotnet.microsoft.com/pt-br) (Windows) ou [.NET Core](https://dotnet.microsoft.com/pt-br/) (Linux/ Mac) em sua máquina para executar a API.
+
+⚠️ É nescessário possuir o [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) instalado e configurado ou possuir o mesmo em nuvem para que a aplicação possa se conectar e manipular os dados.
+- O SQL Server só funciona no sistema operacional Windows, para que ele possa ser usado em outro SO será nescessário utilizar o Docker para isso.
+
+⚠️ É nescessário instalar também o [CLI do Entity Framework](https://www.nuget.org/packages/dotnet-ef) em sua máquina para que seja possível manipular o banco de dados.
+
+**Na raiz do projeto execute os comandos abaixo no seu terminal:**
+
+1. Instale as dependências
+```
+dotnet restore ./src
+```
+
+2. Execute a aplicação
+```
+dotnet run --project ./src/TrybeGames/TrybeGames.csproj
+```
+
+## Desenvolvimento 🧑‍💻
+Para desenvolver novos recursos ou refatorar é recomendado o uso do [Docker](https://www.docker.com) e do [Docker compose](https://docs.docker.com/compose/install), pois eles fornecem um ambiente isolado e devidamente configurado no arquivo `docker-compose.dev.yml`.
+
+⚠️ É necessário ter o [Git](https://git-scm.com) instalado em sua máquina para o controle de versão da API.
+
+**Na raiz do projeto execute os comandos abaixo no seu terminal:**
+1. Crie e entre em uma nova *branch* de desenvolvimento
+```
+git checkout -b nome-da-branch
+```
+<br />
+
+2. Crie o ambiente Docker de desenvolvimento
+```shell
+docker-compose -f docker-compose.dev.yml up -d
+```
+- Após esse processo a aplicação estará pronta para o desenvolvimento e executando no container `dev_trybe-hotel`.
+<br />
+
+3. É possível executar os testes da API no container `test_trybe-hotel` com o comando `dotnet test` na CLI do container ou exeutar testes específicos junto do parâmetro `--filter`, veja alguns exemplos desses comandos no arquivo `Makefile`.
+<br />
+
+<details>
+  <summary><strong>:open_file_folder: Divisão da aplicação</strong></summary>
+  <br/>
 
 O sistema está dividido em diretórios específicos para auxiliar na organização e desenvolvimento do projeto.
 
@@ -29,8 +104,11 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
 <br />
 
 - `Services`: Este diretório armazena os serviços responsáveis pela geração de token e pelo serviço de geolocalização.
+<br/>
 
-<details id='der'>
+</details>
+
+<details>
   <summary><strong>🎲 Banco de Dados</strong></summary>
   <br/>
 
@@ -52,6 +130,10 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
   - Um quarto pode ter várias reservas.
 
 </details>
+
+Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
+
+Na primeira fase deste projeto, você desenvolveu algumas rotas de entidades acerca de cidades, hotéis e quartos. Na segunda fase, você construiu rotas para o cadastro e login de pessoas clientes e o cadastro de reservas. Na terceira fase, você adicionou novas funcionalidades em rotas e adicionou serviços externos. **Agora, você irá desenvolver uma funcionalidade preparar a sua aplicação para deploy.**
 
 <details>
 <summary><strong>🐳 Docker</strong></summary><br />
@@ -79,24 +161,5 @@ var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=Tr
 ```
 
 ⚠️ ** Essa connection string poderá ser utilizada no requisito 1 **
-
-</details>
-
-<details id='refatorando'>
-  <summary>Continuando o projeto Trybe Hotel</summary>
-
-Você já iniciou o projeto da nossa aplicação e portanto, todas as funcionalidades podem ser trazidas para não duplicar o funcionamento. Isso será muito importante, especialmente no que diz respeito ao banco de dados. Algumas models do seu banco de dados anterior serão referenciadas nas models agora, portanto, vamos trazer as funcionalidades anteriores.
-
-Mas como fazemos isso:
-
-Após clonar o repositório deste projeto, apenas copie e cole as funcionalidades que você construiu anteriormente:
-
-- `Controllers`: copie todos os arquivos do diretório `Controllers` do projeto anterior e cole no diretório `Controllers` deste projeto.
-- `Dto`: copie todos os arquivos do diretório `Dto` do projeto anterior e cole no diretório `Dto` deste projeto.
-- `Models`: copie os arquivos referentes às models `City`, `Hotel`, `Room`, `User` e `Booking` do projeto anterior e cole no diretório `Models` deste projeto.
-- `Repository`: copie os arquivos `RoomRepository`, `HotelRepository`, `CityRepository`, `UserRepository` e `BookingRepository` do projeto anterior e cole no diretório `Repository` deste projeto. Não copie as interfaces. Para o arquivo `TrybeHotelContext`, não o substitua. Apenas adicione os `DBSets` e implemente os métodos `OnConfiguring()` e `OnModelCreating()`.
-- `Migrations`: Se você possui um diretório de migrations, significa que você criou migrations no projeto anterior. Não copie este diretório e crie migrations novas porque a instância do banco de dados no container não será o mesmo.
-- `Services`: copie todos os arquivos do diretório `Services` do projeto anterior e cole no diretório `Services` deste projeto.
-- `Testes`: No projeto de testes, você pode copiar a funcionalidade do arquivo `src/TrybeHotel.Test/IntegrationTest.cs`.
 
 </details>
