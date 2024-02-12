@@ -8,44 +8,25 @@ Desenvolvido durante o período de **Aceleração C#** da Trybe 🚀
 
 Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento dos requisitos solicitados!
 
-## Fases do projeto :hammer:
+## Fases do projeto 🔨
 O projeto foi construído em 4 fases em que cada fase consistia em desenvolver um novo recurso da aplicação no repositório correspondente daquela fase e adicionar o código finalizado da fase anterior na atual e assim por diante até que a API estivesse completa na última fase. As fases foram nomeadas seguindo a ordem das letras do alfabeto.
 
-- **Fase A**
-  - olá
+<br />
 
-Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
+- **Fase A - Recursos básicos 🏁** 
+  - Nessa fase foi desenvolvido o CRUD inicial de cidades, hotéis e quartos disponíveis. Além disso, foram criados testes que cobrissem no mínimo 40% das linhas de código.
+<br />
 
-Na primeira fase deste projeto, você desenvolveu algumas rotas de entidades acerca de cidades, hotéis e quartos. Na segunda fase, você construiu rotas para o cadastro e login de pessoas clientes e o cadastro de reservas. Na terceira fase, você adicionou novas funcionalidades em rotas e adicionou serviços externos. **Agora, você irá desenvolver uma funcionalidade preparar a sua aplicação para deploy.**
+- **Fase B - Segurança e rotas de usuários 🔐**
+  - Nessa fase foi desenvolvido o recurso de segurança da API utilizando tokens _Bearer_ para autenticação e autorização do usuário, além de criar as rotas de cadastro e login. Também foram criadas novas rotas dos CRUDs iniciados na fase anterior, bem como o recurso de **booking** (reservas) de quartos de hotéis. Além disso, foram criados testes que cobrissem no mínimo 40% das linhas de código.
+<br />
 
-<details>
-<summary><strong>🐳 Docker</strong></summary><br />
+- **Fase C - Geolocalização 📍🌎**
+  - Nessa fase foi desenvolvido um recurso especial de **geolocalização** que permite buscar os hotéis mais próximos baseando-se em um endereço que o usuário forneça ordenando o resultado dessa consulta do hotel mais próximo para o menos próximo. Esse recurso utiliza o serviço externo [nominatim](https://nominatim.org/release-docs/latest) para obter os dados de latitude e longitude do endereço infomado. Foi nescessário refatorar alguns recursos anteriormente desenvolvidos para que essa nova funcionalidade pudesse ser implementada.
+<br />
 
-Para auxiliar no desenvolvimento, este projeto possui um arquivo do docker compose para subir um serviço do banco de dados `Azure Data Studio`. Este banco de dados possui a mesma arquitetura do `SQL Server`.
-
-Para subir o serviço, utilize o comando:
-
-```shell
-docker-compose up -d --build
-```
-
-Para conectar ao seu sistema de gerenciamento de banco de dados, utilize as seguintes credenciais:
-
-- `Server`: localhost
-- `User`: sa
-- `Password`: TrybeHotel12!
-- `Database`: TrybeHotel
-- `Trust server certificate`: true
-
-Para criar o contexto do banco de dados na sua aplicação, utilize como connection string:
-
-```csharp
-var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
-```
-
-⚠️ ** Essa connection string poderá ser utilizada no requisito 1 **
-
-</details>
+- **Fase D - Status e deploy 🚀**
+  - Nessa fase foi desenvolvido um recurso para obter o status da API, nescessário para saber se ela está ou não online. Também foi criado um Dockerfile da aplicação para o deploy no [Railway](https://railway.app/).
 
 ## Uso no Docker 🐋
 Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https://docs.docker.com/compose/install) instalados, você pode economizar muito trabalho na configuração do ambiente de produção.
@@ -193,9 +174,9 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
 
 Para adicionar as alterações da nova branch de desenvolvimento na branch principal ```main``` é nescessário criar um *Pull Request* neste repositório.
 
-:no_entry_sign: Alterações diretas na branch ```main``` estão bloqueadas.
+🚫 Alterações diretas na branch ```main``` estão bloqueadas.
 
-:white_check_mark: O uso dos comandos `make` listados no arquivo `Makefile` é recomendado para acelerar o processo de criação e remoção dos containers dev e/ou produção ou na execução de scripts `dotnet` no caso de não usar o Docker como ambiente de desenvolvimento.
+✅ O uso dos comandos `make` listados no arquivo `Makefile` é recomendado para acelerar o processo de criação e remoção dos containers dev e/ou produção ou na execução de scripts `dotnet` no caso de não usar o Docker como ambiente de desenvolvimento.
 
 ## Contribuidores 🤝
 
