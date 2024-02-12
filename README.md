@@ -2,11 +2,14 @@
 
 Boas-vindas ao repositório do projeto `Trybe Hotel`
 
-Nesse projeto foi desenvolvido uma **API de booking** de várias redes de hotéis, trata-se de um software completo contando com recurso de autenticação e autorização por token, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de geolocalização sendo possível obter os hotéis mais próximos de um determinado endereço, consumindo dados da API [nominatim](https://nominatim.org/release-docs/latest).
+Nesse projeto foi desenvolvido uma API de booking de várias redes de hotéis, trata-se de um software completo contando com recurso de **autenticação e autorização por token**, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de **geolocalização** sendo possível obter os hotéis mais próximos de um determinado endereço através do consumo de dados da API [nominatim](https://nominatim.org/release-docs/latest).
 
 Desenvolvido durante o período de **Aceleração C#** da Trybe 🚀
 
-Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento do requisitos solicitados!
+Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento dos requisitos solicitados!
+
+## Fases do projeto :hammer:
+O projeto foi construído em 4 fases em que cada fase consistia em desenvolver um novo recurso da aplicação no repositório correspondente daquela fase e adicionar o código finalizado da fase anterior na atual e assim por diante até que a API estivesse completa na última fase. As fases foram nomeadas seguindo a ordem das letras do alfabeto.
 
 ## Uso no Docker 🐋
 Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https://docs.docker.com/compose/install) instalados, você pode economizar muito trabalho na configuração do ambiente de produção.
@@ -40,11 +43,9 @@ docker rm -fv entity-framework-trybe-hotel
 docker image rm entity-framework-trybe-hotel
 ```
 
-- Caso precise executar novos comandos do _Entity Framework (EF)_ no ambiente de produção utilize esse container podendo removê-lo logo em seguida, ou não, sempre que nescessário. 
-<br />
+- Caso precise executar novos comandos do _Entity Framework (EF)_ no ambiente de produção utilize esse container podendo removê-lo logo em seguida, ou não, sempre que nescessário.
 
 ## Instalação e Uso 🖥️
-❌ Para que as variáveis de ambiente possam ser reconhecidas fora do ambiente Docker é nescessário criar uma lógica na API para ler e definir essas variáveis do arquivo `.env.production.local`
 
 ⚠️ É necessário ter instalado o [.NET Framework](https://dotnet.microsoft.com/pt-br) (Windows) ou [.NET Core](https://dotnet.microsoft.com/pt-br/) (Linux/ Mac) em sua máquina para executar a API.
 
@@ -62,23 +63,28 @@ dotnet restore ./src
 <br />
 
 2. Execute os seguintes comandos do _Entity Framework (EF)_:
+
+&nbsp;&nbsp;&nbsp;⚠️ No **Windows** em vez de usar `export ASPNETCORE_ENVIRONMENT=Production` utilize `set ASPNETCORE_ENVIRONMENT=Production`.
+
+&nbsp;&nbsp;&nbsp;⚠️ Sempre que executar comandos do _Entity Framework (EF)_ no ambiente local defina a variável `ASPNETCORE_ENVIRONMENT` junto do comando.
+
 - Visualizar _Migrations_ pendentes
 ```
-dotnet ef migrations list
+export ASPNETCORE_ENVIRONMENT=Production && dotnet ef migrations list --project ./src/TrybeHotel/TrybeHotel.csproj
 ```
 
 - Criar e/ou atualizar o banco de dados com as _Migrations_ pendentes
 ```
-dotnet ef database update
+export ASPNETCORE_ENVIRONMENT=Production && dotnet ef database update --project ./src/TrybeHotel/TrybeHotel.csproj
 ```
 <br />
 
 3. Execute a aplicação
-- ⚠️ Certifique-se de que o banco de dados, bem como suas tabelas, estejam criados.
+
+&nbsp;&nbsp;&nbsp;⚠️ Certifique-se de que o banco de dados, bem como suas tabelas, estejam criados.
 ```
-dotnet run --project ./src/TrybeHotel/TrybeHotel.csproj
+dotnet run --project ./src/TrybeHotel/TrybeHotel.csproj --environment Production
 ```
-<br />
 
 ## Desenvolvimento 🧑‍💻
 Para desenvolver novos recursos ou refatorar é recomendado o uso do [Docker](https://www.docker.com) e do [Docker compose](https://docs.docker.com/compose/install), pois eles fornecem um ambiente isolado e devidamente configurado no arquivo `docker-compose.dev.yml`.
@@ -96,14 +102,14 @@ git checkout -b nome-da-branch
 ```shell
 docker-compose -f docker-compose.dev.yml up -d
 ```
-- Após esse processo a aplicação estará pronta para o desenvolvimento e executando no container `dev_trybe-hotel`.
+- Após esse processo a API estará disponível em seu `http://localhost:5057` e executando no container `dev_trybe-hotel`.
 <br />
 
 3. É possível executar os testes da API no container `test_trybe-hotel` com o comando `dotnet test` na CLI do container ou exeutar testes específicos junto do parâmetro `--filter`, veja alguns exemplos desses comandos no arquivo `Makefile`.
 <br />
 
 <details>
-  <summary><strong>:open_file_folder: Divisão da aplicação</strong></summary>
+  <summary><strong>:open_file_folder: Estrutura de arquivos</strong></summary>
   <br />
 
 O sistema está dividido em diretórios específicos para auxiliar na organização e desenvolvimento do projeto.
@@ -121,8 +127,8 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
 <br />
 
 - `Services`: Este diretório armazena os serviços responsáveis pela geração de token e pelo serviço de geolocalização.
-<br />
 
+---
 </details>
 
 <details>
@@ -146,7 +152,19 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
   - Uma pessoa usuária pode ter várias reservas.
   - Um quarto pode ter várias reservas.
 
+---
 </details>
+
+Para adicionar as alterações da nova branch de desenvolvimento na branch principal ```main``` é nescessário criar um *Pull Request* neste repositório.
+
+:no_entry_sign: Alterações diretas na branch ```main``` estão bloqueadas.
+
+:white_check_mark: O uso dos comandos `make` listados no arquivo `Makefile` é recomendado para acelerar o processo de criação e remoção dos containers dev e/ou produção ou na execução de scripts `dotnet` no caso de não usar o Docker como ambiente de desenvolvimento.
+
+## Contribuidores 🤝
+
+- [THIAGO MARTINS](https://github.com/thiagomartins367) - criador e mantenedor
+
 
 Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
 
