@@ -11,6 +11,42 @@ Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a
 ## Fases do projeto :hammer:
 O projeto foi construído em 4 fases em que cada fase consistia em desenvolver um novo recurso da aplicação no repositório correspondente daquela fase e adicionar o código finalizado da fase anterior na atual e assim por diante até que a API estivesse completa na última fase. As fases foram nomeadas seguindo a ordem das letras do alfabeto.
 
+- **Fase A**
+  - olá
+
+Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
+
+Na primeira fase deste projeto, você desenvolveu algumas rotas de entidades acerca de cidades, hotéis e quartos. Na segunda fase, você construiu rotas para o cadastro e login de pessoas clientes e o cadastro de reservas. Na terceira fase, você adicionou novas funcionalidades em rotas e adicionou serviços externos. **Agora, você irá desenvolver uma funcionalidade preparar a sua aplicação para deploy.**
+
+<details>
+<summary><strong>🐳 Docker</strong></summary><br />
+
+Para auxiliar no desenvolvimento, este projeto possui um arquivo do docker compose para subir um serviço do banco de dados `Azure Data Studio`. Este banco de dados possui a mesma arquitetura do `SQL Server`.
+
+Para subir o serviço, utilize o comando:
+
+```shell
+docker-compose up -d --build
+```
+
+Para conectar ao seu sistema de gerenciamento de banco de dados, utilize as seguintes credenciais:
+
+- `Server`: localhost
+- `User`: sa
+- `Password`: TrybeHotel12!
+- `Database`: TrybeHotel
+- `Trust server certificate`: true
+
+Para criar o contexto do banco de dados na sua aplicação, utilize como connection string:
+
+```csharp
+var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
+```
+
+⚠️ ** Essa connection string poderá ser utilizada no requisito 1 **
+
+</details>
+
 ## Uso no Docker 🐋
 Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https://docs.docker.com/compose/install) instalados, você pode economizar muito trabalho na configuração do ambiente de produção.
 
@@ -164,37 +200,3 @@ Para adicionar as alterações da nova branch de desenvolvimento na branch princ
 ## Contribuidores 🤝
 
 - [THIAGO MARTINS](https://github.com/thiagomartins367) - criador e mantenedor
-
-
-Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
-
-Na primeira fase deste projeto, você desenvolveu algumas rotas de entidades acerca de cidades, hotéis e quartos. Na segunda fase, você construiu rotas para o cadastro e login de pessoas clientes e o cadastro de reservas. Na terceira fase, você adicionou novas funcionalidades em rotas e adicionou serviços externos. **Agora, você irá desenvolver uma funcionalidade preparar a sua aplicação para deploy.**
-
-<details>
-<summary><strong>🐳 Docker</strong></summary><br />
-
-Para auxiliar no desenvolvimento, este projeto possui um arquivo do docker compose para subir um serviço do banco de dados `Azure Data Studio`. Este banco de dados possui a mesma arquitetura do `SQL Server`.
-
-Para subir o serviço, utilize o comando:
-
-```shell
-docker-compose up -d --build
-```
-
-Para conectar ao seu sistema de gerenciamento de banco de dados, utilize as seguintes credenciais:
-
-- `Server`: localhost
-- `User`: sa
-- `Password`: TrybeHotel12!
-- `Database`: TrybeHotel
-- `Trust server certificate`: true
-
-Para criar o contexto do banco de dados na sua aplicação, utilize como connection string:
-
-```csharp
-var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
-```
-
-⚠️ ** Essa connection string poderá ser utilizada no requisito 1 **
-
-</details>
