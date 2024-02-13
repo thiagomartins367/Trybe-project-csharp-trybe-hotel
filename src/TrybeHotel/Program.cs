@@ -24,7 +24,7 @@ else
 EnvConfig.Load(dotenvPath);
 
 // Configure port
-var port = Environment.GetEnvironmentVariable("PORT");
+var port = Environment.GetEnvironmentVariable(EnvironmentVariables.PORT);
 builder.WebHost.UseUrls($"http://*:{port}");
 
 // Add services to the container.
