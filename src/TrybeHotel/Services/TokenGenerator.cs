@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
+using TrybeHotel.Env;
 
 namespace TrybeHotel.Services
 {
@@ -14,8 +15,10 @@ namespace TrybeHotel.Services
 
         public TokenGenerator()
         {
-            var envSecretKey = Environment.GetEnvironmentVariable("AUTH_TOKEN_SECRET_KEY");
-            var envExpiresDay = Environment.GetEnvironmentVariable("AUTH_TOKEN_EXPIRE_DAYS");
+            var envSecretKey = Environment
+                .GetEnvironmentVariable(EnvironmentVariables.AUTH_TOKEN_SECRET_KEY);
+            var envExpiresDay = Environment
+                .GetEnvironmentVariable(EnvironmentVariables.AUTH_TOKEN_EXPIRE_DAYS);
             var expiresDayIsNumber = int.TryParse(envExpiresDay, out int expiresDay);
             _tokenOptions = new TokenOptions
             {
