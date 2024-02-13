@@ -52,15 +52,6 @@ test: # Ex: make test
 test-filter: # Ex: make test-name=TestGetCities test-filter
 	dotnet test ./src/TrybeHotel.Test/TrybeHotel.test.csproj --filter '$(test-name)'
 
-evaluator-test : # Ex: make evaluator-test
-	dotnet test ./src/TrybeHotel.Test.Test/TrybeHotel.test.test.csproj
-
-evaluator-test-req-filter: # Ex: make req-number=01 evaluator-test-req-filter
-	dotnet test ./src/TrybeHotel.Test.Test/TrybeHotel.test.test.csproj --filter 'TestReq$(req-number)'
-
-evaluator-test-filter : # Ex: make test-name=CityShouldContainProperPrimaryKey evaluator-test-filter
-	dotnet test ./src/TrybeHotel.Test.Test/TrybeHotel.test.test.csproj --filter '$(test-name)'
-
 # ─────────────────────────────────────────────────────
 # Entity Framework (EF) scripts
 
