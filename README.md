@@ -27,6 +27,26 @@ O projeto foi construído em 4 fases em que cada fase consistia em desenvolver u
 
 - **Fase D - Status e deploy 🚀**
   - Nessa fase foi desenvolvido um recurso para obter o status da API, nescessário para saber se ela está ou não online. Também foi criado um Dockerfile da aplicação para o deploy no [Railway](https://railway.app/).
+ 
+## Variáveis de Ambiente 💻
+Antes de iniciar a API é preciso primeiro definir algumas variáveis de ambiente para seu correto funcionamento. Para isso é preciso criar o arquivo `.env.production.local` no caminho `./src/TrybeHotel` para o ambiente de **produção** ou o arquivo `.env.development.local` para o ambiente de **desenvolvimento**, utilize os arquivos de extensão `.example` para criar uma cópia com todas as variáveis existentes de cada ambiente.
+
+```
+# TrybeHotel
+ASPNETCORE_ENVIRONMENT --> Define qual o ambiente em que a aplicação irá executar (Production ou Development)
+PORT --> Porta em que a aplicação irá ser disponibilizada.
+DB_SERVER --> Servidor do banco de dados.
+DB_NAME --> Nome do banco de dados ao qual a API irá se conectar.
+DB_USER --> Usuário do banco de dados ao qual a API irá se conectar (User: SA).
+DB_PASSWORD --> Senha do usuário do banco de dados ao qual a API irá se conectar.
+AUTH_TOKEN_SECRET_KEY --> Chave secreta para geração de token de autenticação do usuário.
+AUTH_TOKEN_EXPIRE_DAYS --> Período em dias ao qual um token gerado será válido.
+
+# SQL Server
+ACCEPT_EULA --> Confirma a aceitação do "Contrato de Licenciamento do Usuário Final" do SQL Server (Y).
+MSSQL_SA_PASSWORD --> Senha do administrador do SQL Server (Deve ter pelo menos 8 caracteres incluindo letras maiúsculas, minúsculas, números e caractere especial).
+MSSQL_PID --> Id do produto (PID) ou edição do SQL Server (Developer).
+```
 
 ## Uso no Docker 🐋
 Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https://docs.docker.com/compose/install) instalados, você pode economizar muito trabalho na configuração do ambiente de produção.
