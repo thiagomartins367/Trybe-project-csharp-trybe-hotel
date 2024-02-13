@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TrybeHotel.Env;
 using TrybeHotel.Models;
 
 namespace TrybeHotel.Repository;
@@ -23,10 +24,10 @@ public class TrybeHotelContext : DbContext, ITrybeHotelContext
 
     private static string GetConnectionString()
     {
-        var dbServer = Environment.GetEnvironmentVariable("DB_SERVER");
-        var dbName = Environment.GetEnvironmentVariable("DB_NAME");
-        var dbUser = Environment.GetEnvironmentVariable("DB_USER");
-        var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+        var dbServer = Environment.GetEnvironmentVariable(EnvironmentVariables.DB_SERVER);
+        var dbName = Environment.GetEnvironmentVariable(EnvironmentVariables.DB_NAME);
+        var dbUser = Environment.GetEnvironmentVariable(EnvironmentVariables.DB_USER);
+        var dbPassword = Environment.GetEnvironmentVariable(EnvironmentVariables.DB_PASSWORD);
         var connectionStringFirstPart = $"Server={dbServer};Database={dbName}";
         var connectionStringSecondPart = $"User={dbUser};Password={dbPassword}";
         return $"{connectionStringFirstPart};{connectionStringSecondPart};TrustServerCertificate=True";
