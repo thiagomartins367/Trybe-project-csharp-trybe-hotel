@@ -4,6 +4,8 @@ WORKDIR /usr/src/test_trybe-hotel
 
 COPY . ./
 
+COPY ./TrybeHotel/.env.development.local ./TrybeHotel.Test/bin/Debug/net6.0/.env.development.local
+
 RUN dotnet restore
 
 # ENTRYPOINT while true; do dotnet test ./TrybeHotel.Test/TrybeHotel.test.csproj; sleep 5; done;
