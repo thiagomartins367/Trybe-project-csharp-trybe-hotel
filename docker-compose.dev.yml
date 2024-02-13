@@ -13,13 +13,8 @@ services:
       - 5057:5057
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - PORT=5057
-      - DB_SERVER=dev_db-trybe-hotel
-      - DB_NAME=TrybeHotel
-      - DB_USER=SA
-      - DB_PASSWORD=TrybeHotel12!
-      - AUTH_TOKEN_SECRET_KEY=4d82a63bbdc67c1e4784ed6587f3730c
-      - AUTH_TOKEN_EXPIRE_DAYS=7
+    env_file:
+      - ./src/TrybeHotel/.env.development.local
     volumes:
       - ./src/TrybeHotel:/usr/src/dev_trybe-hotel
       - ./src/TrybeHotel:/usr/src/dev_trybe-hotel/.entity-framework
@@ -38,10 +33,8 @@ services:
     restart: always
     ports:
       - 1433:1433
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=TrybeHotel12!
-      - MSSQL_PID=Developer
+    env_file:
+      - ./src/TrybeHotel/.env.development.local
     networks:
       - dev_network-trybe-hotel
 
