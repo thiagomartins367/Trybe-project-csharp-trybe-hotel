@@ -145,6 +145,20 @@ docker-compose -f docker-compose.dev.yml up -d
 3. É possível executar os testes da API no container `test_trybe-hotel` com o comando `dotnet test` na CLI do container ou exeutar testes específicos junto do parâmetro `--filter`, veja alguns exemplos desses comandos no arquivo `Makefile`.
 <br />
 
+4. No container `dev_trybe-hotel` será criado o diretório `.entity-framework` para que seja possível executar os comandos do _Entity Framework (EF)_ sem que isso afete os arquivos compilados da API.
+
+- Entre no diretório criado dentro do container.
+```shell
+cd .entity-framework/
+```
+
+- Execute os comandos que precisar.
+```shell
+dotnet ef migrations list
+```
+
+<br />
+
 <details>
   <summary><strong>:open_file_folder: Estrutura de arquivos</strong></summary>
   <br />
