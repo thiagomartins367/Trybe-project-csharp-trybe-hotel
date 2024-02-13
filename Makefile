@@ -8,7 +8,7 @@ compose_down_dev: # Ex: make compose_down_dev
 	docker-compose -f docker-compose.dev.yml down --remove-orphans
 
 compose_rm_images_dev: # Ex: make compose_rm_images_dev
-	docker image rm dev_trybe-hotel test_trybe-hotel evaluator-test_trybe-hotel
+	docker image rm dev_trybe-hotel test_trybe-hotel
 
 # ─────────────────────────────────────────────────────
 # Docker PROD scripts
