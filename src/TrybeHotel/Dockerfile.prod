@@ -14,4 +14,6 @@ WORKDIR /usr/src/trybe-hotel
 
 COPY --from=build-env /app/out .
 
+COPY .env.production.local ./.env.production.local
+
 ENTRYPOINT ["dotnet", "TrybeHotel.dll"]
