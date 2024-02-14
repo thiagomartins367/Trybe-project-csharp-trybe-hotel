@@ -1,0 +1,51 @@
+version: "3.8"
+services:
+  trybe-hotel:
+    container_name: trybe-hotel
+    image: trybe-hotel
+    build:
+      context: ./src/TrybeHotel
+      dockerfile: Dockerfile.prod
+    working_dir: /usr/src/trybe-hotel
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - ./src/TrybeHotel/.env.production.local
+    networks:
+      - network-trybe-hotel
+
+  entity-framework-trybe-hotel:
+    container_name: entity-framework-trybe-hotel
+    image: entity-framework-trybe-hotel
+    build:
+      context: ./src/TrybeHotel
+      dockerfile: Dockerfile.entity-framework.prod
+    working_dir: /usr/src/entity-framework
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - ./src/TrybeHotel/.env.production.local
+    volumes:
+      - .config:/usr/src/entity-framework/.config
+    networks:
+      - network-trybe-hotel
+
+  db-trybe-hotel:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: db-trybe-hotel
+    restart: always
+    ports:
+      - 1434:1433
+    env_file:
+      - ./src/TrybeHotel/.env.production.local
+    networks:
+      - network-trybe-hotel
+
+networks:
+  network-trybe-hotel:
+    name: network-trybe-hotel
+    external: false

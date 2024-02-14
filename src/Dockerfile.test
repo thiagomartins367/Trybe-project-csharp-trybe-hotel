@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS test
+
+WORKDIR /usr/src/test_trybe-hotel
+
+COPY . ./
+
+COPY ./TrybeHotel/.env.development.local ./TrybeHotel.Test/bin/Debug/net6.0/.env.development.local
+
+RUN dotnet restore
+
+# ENTRYPOINT while true; do dotnet test ./TrybeHotel.Test/TrybeHotel.test.csproj; sleep 5; done;
+ENTRYPOINT while true; do echo "✅ Ready to run tests!"; sleep 86400; done;

@@ -1,239 +1,203 @@
-# Trybe Hotel - Fase D
+# Trybe Hotel
 
-Boas-vindas ao repositório do projeto Trybe Hotel - Fase D
+Boas-vindas ao repositório do projeto `Trybe Hotel`
 
-Para realizar o projeto, atente-se a cada passo descrito a seguir, e se tiver **qualquer dúvida**, nos envie no _Slack_ da turma! #vqv 🚀
+Nesse projeto foi desenvolvido uma API de booking de várias redes de hotéis, trata-se de um software completo contando com recurso de **autenticação e autorização por token**, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de **geolocalização** sendo possível obter os hotéis mais próximos de um determinado endereço através do consumo de dados da API [nominatim](https://nominatim.org/release-docs/latest).
 
-Aqui, você vai encontrar os detalhes de como estruturar o desenvolvimento do seu projeto a partir desse repositório, utilizando uma branch específica e um _Pull Request_ para colocar seus códigos.
+Desenvolvido durante o período de **Aceleração C#** da Trybe 🚀
 
-## Termos e acordos
+Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento dos requisitos solicitados!
 
-Ao iniciar este projeto, você concorda com as diretrizes do [Código de Conduta e do Manual da Pessoa Estudante da Trybe](https://app.betrybe.com/learn/student-manual/codigo-de-conduta-da-pessoa-estudante).
+## Fases do projeto 🔨
+O projeto foi construído em 4 fases em que cada fase consistia em desenvolver um novo recurso da aplicação no repositório correspondente daquela fase e adicionar o código finalizado da fase anterior na atual e assim por diante até que a API estivesse completa na última fase. As fases foram nomeadas seguindo a ordem das letras do alfabeto.
 
-## Entregáveis
----
+<br />
+
+- **Fase A - Recursos básicos 🏁** 
+  - Nessa fase foi desenvolvido o CRUD inicial de cidades, hotéis e quartos disponíveis. Além disso, foram criados testes que cobrissem no mínimo 40% das linhas de código.
+<br />
+
+- **Fase B - Segurança e rotas de usuários 🔐**
+  - Nessa fase foi desenvolvido o recurso de segurança da API utilizando tokens _Bearer_ para autenticação e autorização do usuário, além de criar as rotas de cadastro e login. Também foram criadas novas rotas dos CRUDs iniciados na fase anterior, bem como o recurso de **booking** (reservas) de quartos de hotéis. Além disso, foram criados testes que cobrissem no mínimo 40% das linhas de código.
+<br />
+
+- **Fase C - Geolocalização 📍🌎**
+  - Nessa fase foi desenvolvido um recurso especial de **geolocalização** que permite buscar os hotéis mais próximos baseando-se em um endereço que o usuário forneça ordenando o resultado dessa consulta do hotel mais próximo para o menos próximo. Esse recurso utiliza o serviço externo [nominatim](https://nominatim.org/release-docs/latest) para obter os dados de latitude e longitude do endereço informado. Foi nescessário refatorar alguns recursos anteriormente desenvolvidos para que essa nova funcionalidade pudesse ser implementada.
+<br />
+
+- **Fase D - Status e deploy 🚀**
+  - Nessa fase foi desenvolvido um recurso para obter o status da API, nescessário para saber se ela está ou não online. Também foi criado um Dockerfile da aplicação para o deploy no [Railway](https://railway.app/).
+ 
+## Variáveis de Ambiente 💻
+Antes de iniciar a API é preciso primeiro definir algumas variáveis de ambiente para seu correto funcionamento. Para isso é preciso criar o arquivo `.env.production.local` no caminho `./src/TrybeHotel` para o ambiente de **produção** ou o arquivo `.env.development.local` para o ambiente de **desenvolvimento**, utilize os arquivos de extensão `.example` para criar uma cópia com todas as variáveis existentes de cada ambiente.
+
+```
+# TrybeHotel
+ASPNETCORE_ENVIRONMENT --> Define qual o ambiente em que a aplicação irá executar (Production ou Development)
+PORT --> Porta em que a API irá ser disponibilizada.
+DB_SERVER --> Servidor do banco de dados.
+DB_PORT --> Porta do banco de dados ao qual a API irá se conectar.
+DB_DIALECT --> Dialeto do banco de dados (0 - SQL Server; 1 - MySQL; etc...).
+DB_NAME --> Nome do banco de dados ao qual a API irá se conectar.
+DB_USER --> Usuário do banco de dados ao qual a API irá se conectar.
+DB_PASSWORD --> Senha do usuário do banco de dados ao qual a API irá se conectar.
+AUTH_TOKEN_SECRET_KEY --> Chave secreta para geração de token de autenticação do usuário.
+AUTH_TOKEN_EXPIRE_DAYS --> Período em dias ao qual um token gerado será válido.
+
+# SQL Server
+ACCEPT_EULA --> Confirma a aceitação do "Contrato de Licenciamento do Usuário Final" do SQL Server (Y).
+MSSQL_SA_PASSWORD --> Senha do administrador do SQL Server (Deve ter pelo menos 8 caracteres incluindo letras maiúsculas, minúsculas, números e caractere especial).
+MSSQL_PID --> Id do produto (PID) ou edição do SQL Server (Developer).
+```
+
+## Uso no Docker 🐋
+Se você possuir o [Docker](https://www.docker.com) e o [Docker compose](https://docs.docker.com/compose/install) instalados, você pode economizar muito trabalho na configuração do ambiente de produção.
+
+1. Para iniciar todo o ambiente de produção no Docker execute o comando:
+```
+docker-compose -f docker-compose.prod.yml up -d
+```
+- Após esse processo a API estará executando no container `trybe-hotel`, o banco de dados no `db-trybe-hotel` e um container auxiliar também será iniciado para executar alguns comandos nescessários do _Entity Framework (EF)_ antes de começar a utilizar a aplicação.
+<br />
+
+2. Em seguida acesse o CLI do container `entity-framework-trybe-hotel` e execute os seguintes comandos:
+- Visualizar _Migrations_ pendentes
+```
+dotnet ef migrations list
+```
+
+- Criar e/ou atualizar o banco de dados com as _Migrations_ pendentes
+```
+dotnet ef database update
+```
+<br />
+
+3. Após todo esse processo o banco de dados, bem como suas tabelas, estarão criados e prontos. A partir desse momento o container `entity-framework-trybe-hotel` não será mais nescessário, logo, ele pode ser removido com o comando:
+```
+docker rm -fv entity-framework-trybe-hotel
+```
+
+- Para remover a imagem execute:
+```
+docker image rm entity-framework-trybe-hotel
+```
+
+- Caso precise executar novos comandos do _Entity Framework (EF)_ no ambiente de produção utilize esse container podendo removê-lo logo em seguida, ou não, sempre que nescessário.
+
+## Instalação e Uso 🖥️
+
+⚠️ É necessário ter instalado o [.NET Framework](https://dotnet.microsoft.com/pt-br) (Windows) ou [.NET Core](https://dotnet.microsoft.com/pt-br/) (Linux/ Mac) em sua máquina para executar a API.
+
+⚠️ É nescessário possuir o [SQL Server](https://www.microsoft.com/pt-br/sql-server/sql-server-downloads) instalado e configurado ou possuir o mesmo em nuvem para que a aplicação possa se conectar e manipular os dados.
+- O SQL Server só funciona no sistema operacional Windows, para que ele possa ser usado em outro SO será nescessário utilizar o Docker como ambiente de execução do banco de dados.
+
+⚠️ É nescessário instalar também o [CLI do Entity Framework](https://www.nuget.org/packages/dotnet-ef) em sua máquina para executar as _Migrations_ do banco de dados.
+
+**Na raiz do projeto execute os comandos abaixo no seu terminal:**
+
+1. Instale as dependências
+```
+dotnet restore ./src
+```
+<br />
+
+2. Execute os seguintes comandos do _Entity Framework (EF)_:
+
+&nbsp;&nbsp;&nbsp;⚠️ No **Windows** em vez de usar `export ASPNETCORE_ENVIRONMENT=Production` utilize `set ASPNETCORE_ENVIRONMENT=Production`.
+
+&nbsp;&nbsp;&nbsp;⚠️ Sempre que executar comandos do _Entity Framework (EF)_ no ambiente local defina a variável `ASPNETCORE_ENVIRONMENT` junto do comando.
+
+- Visualizar _Migrations_ pendentes
+```
+export ASPNETCORE_ENVIRONMENT=Production && dotnet ef migrations list --project ./src/TrybeHotel/TrybeHotel.csproj
+```
+
+- Criar e/ou atualizar o banco de dados com as _Migrations_ pendentes
+```
+export ASPNETCORE_ENVIRONMENT=Production && dotnet ef database update --project ./src/TrybeHotel/TrybeHotel.csproj
+```
+<br />
+
+3. Execute a aplicação
+
+&nbsp;&nbsp;&nbsp;⚠️ Certifique-se de que o banco de dados, bem como suas tabelas, estejam criados.
+```
+dotnet run --project ./src/TrybeHotel/TrybeHotel.csproj --environment Production
+```
+
+## Desenvolvimento 🧑‍💻
+Para desenvolver novos recursos ou refatorar é recomendado o uso do [Docker](https://www.docker.com) e do [Docker compose](https://docs.docker.com/compose/install), pois eles fornecem um ambiente isolado e devidamente configurado no arquivo `docker-compose.dev.yml`.
+
+⚠️ É necessário ter o [Git](https://git-scm.com) instalado em sua máquina para o controle de versão da API.
+
+**Na raiz do projeto execute os comandos abaixo no seu terminal:**
+1. Crie e entre em uma nova *branch* de desenvolvimento
+```
+git checkout -b nome-da-branch
+```
+<br />
+
+2. Crie o ambiente Docker de desenvolvimento
+```shell
+docker-compose -f docker-compose.dev.yml up -d
+```
+- Após esse processo a API estará disponível em seu `http://localhost:5057` e executando no container `dev_trybe-hotel`.
+<br />
+
+3. É possível executar os testes da API no container `test_trybe-hotel` com o comando `dotnet test` na CLI do container ou exeutar testes específicos junto do parâmetro `--filter`, veja alguns exemplos desses comandos no arquivo `Makefile`.
+<br />
+
+4. No container `dev_trybe-hotel` será criado o diretório `.entity-framework` para que seja possível executar os comandos do _Entity Framework (EF)_ sem que isso afete os arquivos compilados da API.
+
+- Entre no diretório criado dentro do container.
+```shell
+cd .entity-framework/
+```
+
+- Execute os comandos que precisar.
+```shell
+dotnet ef migrations list
+```
+
+<br />
 
 <details>
-<summary><strong>🤷🏽‍♀️ Como entregar</strong></summary>
-
-Para entregar o seu projeto você deverá criar um _Pull Request_ neste repositório.
-
-Lembre-se que você pode consultar nosso conteúdo sobre [Git & GitHub](https://app.betrybe.com/learn/course/5e938f69-6e32-43b3-9685-c936530fd326/module/fc998c60-386e-46bc-83ca-4269beb17e17/section/fe827a71-3222-4b4d-a66f-ed98e09961af/day/1a530297-e176-4c79-8ed9-291ae2950540/lesson/2b2edce7-9c49-4907-92a2-aa571f823b79) e nosso [Blog - Git & GitHub](https://blog.betrybe.com/tecnologia/git-e-github/) sempre que precisar!
-
-</details>
-  
-<details>
-<summary><strong>🧑‍💻 O que deverá ser desenvolvido</strong></summary>
-
-Sua empresa do coração começou a desenvolver um software de booking de várias redes de hotéis.
-Sua missão é continuar o desenvolvimento dessa API. Será necessário criar uma rota padrão para ver o status da aplicação e construir um Dockerfile capaz de preparar sua aplicação para Deploy. Nessa fase, sua missão será refatorar o projeto para comportar essa funcionalidade e desenvolvê-la.
-
-</details>
-  
-<details>
-  <summary><strong>📝 Habilidades a serem trabalhadas </strong></summary>
-
-Neste projeto, verificamos se você é capaz de:
-
-- Entender o processo de criar containers para a aplicação.
-- Preparar um sistema para deploy.
-
-
-</details>
-
-
-## Orientações
----
-
-<details>
-  <summary><strong>‼️ Antes de começar a desenvolver</strong></summary><br />
-
-  1. Clone o repositório
-
-  - Use o comando: `git clone git@github.com:tryber/csharp-001-projeto-trybe-hotel-fase-d.git`.
-  - Entre na pasta do repositório que você acabou de clonar:
-    - `cd csharp-001-projeto-trybe-hotel-fase-d`
-
-  2. Instale as dependências
-  
-  - Entre na pasta `src/`.
-  - Execute o comando: `dotnet restore`.
-  
-  3. Crie uma branch a partir da branch `master`
-
-  - Verifique se você está na branch `master`
-    - Exemplo: `git branch`
-  - Se não estiver, mude para a branch `master`
-    - Exemplo: `git checkout master`
-  - Agora crie uma branch à qual você vai submeter os `commits` do seu projeto
-    - Você deve criar uma branch no seguinte formato: `nome-de-usuario-nome-do-projeto`
-    - Exemplo: `git checkout -b joaozinho-csharp-001-projeto-trybe-hotel-fase-d`
-
-  4. Adicione as mudanças ao _stage_ do Git e faça um `commit`
-
-  - Verifique que as mudanças ainda não estão no _stage_
-    - Exemplo: `git status` (deve aparecer listada a pasta _joaozinho_ em vermelho)
-  - Adicione o novo arquivo ao _stage_ do Git
-    - Exemplo:
-      - `git add .` (adicionando todas as mudanças - _que estavam em vermelho_ - ao stage do Git)
-      - `git status` (deve aparecer listado o arquivo _joaozinho/README.md_ em verde)
-  - Faça o `commit` inicial
-    - Exemplo:
-      - `git commit -m 'iniciando o projeto x'` (fazendo o primeiro commit)
-      - `git status` (deve aparecer uma mensagem tipo essa: _nothing to commit_ )
-
-  5. Adicione a sua branch com o novo `commit` ao repositório remoto
-
-  - Usando o exemplo anterior: `git push -u origin joaozinho-csharp-001-projeto-trybe-hotel-fase-d`
-
-  6. Crie um novo `Pull Request` _(PR)_
-
-  - Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/csharp-001-projeto-trybe-hotel-fase-d/pulls)
-  - Clique no botão verde _"New pull request"_
-  - Clique na caixa de seleção _"Compare"_ e escolha a sua branch **com atenção**
-  - Coloque um título para a sua _Pull Request_
-    - Exemplo: _"Cria tela de busca"_
-  - Clique no botão verde _"Create pull request"_
-  - Adicione uma descrição para o _Pull Request_ e clique no botão verde _"Create pull request"_
-  - **Não se preocupe em preencher mais nada por enquanto!**
-  - Volte até a [página de _Pull Requests_ do repositório](https://github.com/tryber/csharp-0x-projeto-trybe-hotel/pulls) e confira que o seu _Pull Request_ está criado
-
-</details>
-
-<details>
-  <summary><strong>⌨️ Durante o desenvolvimento</strong></summary><br/>
-
-  - Faça `commits` das alterações que você fizer no código regularmente
-
-  - Lembre-se sempre de, após um (ou alguns) `commits`, atualizar o repositório remoto
-
-  - Os comandos que você utilizará com mais frequência são:
-    1. `git status` _(para verificar o que está em vermelho - fora do stage - e o que está em verde - no stage)_
-    2. `git add` _(para adicionar arquivos ao stage do Git)_
-    3. `git commit` _(para criar um commit com os arquivos que estão no stage do Git)_
-    4. `git push -u origin nome-da-branch` _(para enviar o commit para o repositório remoto na primeira vez que fizer o `push` de uma nova branch)_
-    5. `git push` _(para enviar o commit para o repositório remoto após o passo anterior)_
-
-</details>
-
-<details>
-  <summary><strong>🤝 Depois de terminar o desenvolvimento (opcional)</strong></summary><br/>
-
-  Para sinalizar que o seu projeto está pronto para o _"Code Review"_, faça o seguinte:
-
-  - Vá até a página **DO SEU** _Pull Request_, adicione a label de _"code-review"_ e marque seus colegas:
-
-    - No menu à direita, clique no _link_ **"Labels"** e escolha a _label_ **code-review**;
-
-    - No menu à direita, clique no _link_ **"Assignees"** e escolha **o seu usuário**;
-
-    - No menu à direita, clique no _link_ **"Reviewers"** e digite `students`, selecione o time `tryber/students-sd-0x`.
-
-  Caso tenha alguma dúvida, [aqui tem um vídeo explicativo](https://vimeo.com/362189205).
-
-</details>
-
-<details>
-  <summary><strong>🕵🏿 Revisando um pull request</strong></summary><br />
-
-  Use o conteúdo sobre [Code Review](https://app.betrybe.com/course/real-life-engineer/code-review) para te ajudar a revisar os _Pull Requests_.
-
-</details>
-
-<details>
-  <summary><strong>🎛 Linter</strong></summary><br />
-
-  Usaremos o [NetAnalyzer](https://docs.microsoft.com/pt-br/dotnet/fundamentals/code-analysis/overview) para fazer a análise estática do seu código.
-
-  Este projeto já vem com as dependências relacionadas ao _linter_ configuradas no arquivo `.csproj`.
-
-  O analisador já é instalado pelo plugin da `Microsoft C#` no `VSCode`. Para isso, basta fazer o download do [plugin](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) e instalá-lo.
-</details>
-
-<details>
-  <summary><strong>🛠 Testes</strong></summary><br />
-
-  O .NET já possui sua própria plataforma de testes.
-  
-  Este projeto já vem configurado e com suas dependências.
-
-  ### Executando todos os testes
-
-  Para executar os testes com o .NET, execute o comando dentro do diretório do seu projeto `src`!
-
-  ```
-  dotnet test
-  ```
-
-  ### Executando um teste específico
-
-  Para executar um teste específico, basta executar o comando `dotnet test --filter Name~TestReq01`.
-
-  :warning: **Importante:** o comando irá executar testes cujo nome contém `TestReq01`.
-
-  :warning: **O avaliador automático não necessariamente avalia seu projeto na ordem em que os requisitos aparecem no readme. Isso acontece para deixar o processo de avaliação mais rápido. Então, não se assuste se isso acontecer, ok?**
-
-  ### Outras opções para testes
-  - Algumas opções que podem lhe ajudar são:
-    -  `-?|-h|--help`: exibe a descrição completa de como utilizar o comando.
-    -  `-t|--list-tests`: lista todos os testes, ao invés de executá-los.
-    -  `-v|--verbosity <LEVEL>`: define o nível de detalhe na resposta dos testes.
-      - `q | quiet`
-      - `m | minimal`
-      - `n | normal`
-      - `d | detailed`
-      - `diag | diagnostic`
-      - Exemplo de uso: 
-         ```
-           dotnet test -v diag
-         ```
-         ou
-         ```            
-           dotnet test --verbosity=diagnostic
-         ``` 
-</details>
-
-## Requisitos do projeto
-
-Você está desenvolvendo uma API que será utilizada em uma aplicação de booking de várias redes de hotéis.
-
-Na primeira fase deste projeto, você desenvolveu algumas rotas de entidades acerca de cidades, hotéis e quartos. Na segunda fase, você construiu rotas para o cadastro e login de pessoas clientes e o cadastro de reservas. Na terceira fase, você adicionou novas funcionalidades em rotas e adicionou serviços externos. **Agora, você irá desenvolver uma funcionalidade preparar a sua aplicação para deploy.**
-
-No intuito de auxiliar o desenvolvimento, o time de produto já disponibilizou o diagrama de entidade-relacionamento atualizado e o time de DevOps disponibilizou um container na qual você poderá utilizar um banco de dados.
+  <summary><strong>:open_file_folder: Estrutura de arquivos</strong></summary>
+  <br />
 
 O sistema está dividido em diretórios específicos para auxiliar na organização e desenvolvimento do projeto.
 
-- `Controllers/`: Este diretório armazena os arquivos com as lógicas dos controllers da aplicação. Os métodos a serem desenvolvidos estão prontos mas sem implementação alguma, o que você desenvolverá ao longo do projeto.
+- `Controllers/`: Este diretório armazena os arquivos com as lógicas dos controllers da aplicação que gerenciam as requisições recebidas e as respostas enviadas pela API.
 <br />
 
-- `Models/`: Este diretório armazena os arquivos com as models do banco de dados. Você já desenvolveu as models `City`, `Hotel`, `Room`, `User` e `Bokking` que serão os modelos para as tabelas `Cities`, `Hotels`, `Rooms`, `Users` e `Bookings`.
+- `Models/`: Este diretório armazena os arquivos com as models do banco de dados. As models `City`, `Hotel`, `Room`, `User` e `Booking` são os modelos usados para as tabelas `Cities`, `Hotels`, `Rooms`, `Users` e `Bookings`.
 <br />
 
-- `DTO/`: Este diretório armazena as classes de DTO. Algumas rotas esperam as `responses` baseadas nestes DTOs. Você pode conferir isso pelo requisito do projeto e pelo retorno dos métodos dos `repositories`.
+- `DTO/`: Este diretório armazena as classes de DTO. Responsáveis pela transferência de dados entre camadas da aplicação evitando acessos indevidos a dados sigilosos.
 <br />
 
-- `Repository/`: Este diretório armazena as lógicas que farão a interação com o banco de dados. Os métodos de cada requisito já estão criados e você deverá incluir a implementação de cada um desses métodos respeitando o retorno do DTO. Além disso, você terá o arquivo `TrybeHotelContext` com o contexto para a conexão com o banco de dados. Todos os `repository` e o `context` possuem interfaces que estão nesse diretório e fornecem o contrato para essas classes. Caso você precise criar um novo método para interação com o banco de dados que não esteja mapeado, você pode livremente criar esse novo método na `repository` mas sem se esquecer de escrever o contrato deste método na interface referente.
+- `Repository/`: Este diretório armazena as lógicas que farão a interação com o banco de dados. Além disso, existe nesse mesmo diretório, o arquivo `TrybeHotelContext` com o contexto para a conexão com o banco de dados. Todos os `repository` e o `context` possuem interfaces que estão nesse diretório e fornecem o contrato para essas classes.
 <br />
 
-- `Services`: Este diretório armazena os serviços responsáveis pela geração de token e pelo serviço geográfico.
+- `Services`: Este diretório armazena os serviços responsáveis pela geração de token e pelo serviço de geolocalização.
 
-<details id='der'>
+---
+</details>
+
+<details>
   <summary><strong>🎲 Banco de Dados</strong></summary>
-  <br/>
+  <br />
 
-  Para o desenvolvimento, o time de produto disponibilizou um *Diagrama de Entidade-Relacionamento (DER)* para construir a modelagem do banco de dados. Com essa imagem você já consegue saber:
-  - Como nomear suas tabelas e colunas;
-  - Quais são os tipos de suas colunas;
-  - Relações entre tabelas.
-
-    ![banco de dados](img/der.png)
+  Esse projeto conta com o *Diagrama de Entidade-Relacionamento (DER)* usado na modelagem do banco de dados.
+    
+![banco de dados](img/der.png)
 
   O diagrama infere 05 tabelas:
-  - ***Cities***: tabela que armazenará um conjunto de cidades nas quais os hotéis estão localizados (já desenvolvida).
-  - ***Hotels***: tabela que armazenará os hotéis da nossa aplicação. Note que informamos o `CityId`, atributo que armazenará o id da cidade (já desenvolvida).
-  - ***Rooms***: tabela que armazenará os quartos de cada hotel da nossa aplicação. Note que informamos o `HotelId`, atributo que armazenará o id do hotel (já desenvolvida).
-  - ***Users***: tabela que armazenará as pessoas usuárias do sistema.
-  - ***Bookings***: tabela que armazenará as reservas de quartos de hotéis. Note que informamos os atributos `UserId`, que armazenará o id da pessoa usuária e `RoomId`, que armazenará o id do quarto reservado.
+  - ***Cities***: tabela que armazena um conjunto de cidades nas quais os hotéis estão localizados.
+  - ***Hotels***: tabela que armazena os hotéis da aplicação.
+  - ***Rooms***: tabela que armazena os quartos de cada hotel da aplicação.
+  - ***Users***: tabela que armazena as pessoas usuárias do sistema.
+  - ***Bookings***: tabela que armazena as reservas de quartos de hotéis.
 
   Acerca dos relacionamentos, pelo diagrama de entidade-relacionamento temos:
   - Uma cidade pode ter vários hotéis.
@@ -241,103 +205,15 @@ O sistema está dividido em diretórios específicos para auxiliar na organizaç
   - Uma pessoa usuária pode ter várias reservas.
   - Um quarto pode ter várias reservas.
 
-  ⚠️ **Você poderá criar migrations para visualizar o banco de dados**
-
+---
 </details>
 
-<details>
-<summary><strong>🐳 Docker</strong></summary><br />
+Para adicionar as alterações da nova branch de desenvolvimento na branch principal ```main``` é nescessário criar um *Pull Request* neste repositório.
 
-Para auxiliar no desenvolvimento, este projeto possui um arquivo do docker compose para subir um serviço do banco de dados `Azure Data Studio`. Este banco de dados possui a mesma arquitetura do `SQL Server`.
+🚫 Alterações diretas na branch ```main``` estão bloqueadas.
 
-Para subir o serviço, utilize o comando:
+✅ O uso dos comandos `make` listados no arquivo `Makefile` é recomendado para acelerar o processo de criação e remoção dos containers dev e/ou produção ou na execução de scripts `dotnet` no caso de não usar o Docker como ambiente de desenvolvimento.
 
-```shell
-docker-compose up -d --build
-```
+## Contribuidores 🤝
 
-Para conectar ao seu sistema de gerenciamento de banco de dados, utilize as seguintes credenciais:
-
-- `Server`: localhost
-- `User`: sa
-- `Password`: TrybeHotel12!
-- `Database`: TrybeHotel
-- `Trust server certificate`: true
-
-Para criar o contexto do banco de dados na sua aplicação, utilize como connection string:
-
-```csharp
-var connectionString = "Server=localhost;Database=TrybeHotel;User=SA;Password=TrybeHotel12!;TrustServerCertificate=True";
-```
-
-⚠️ ** Essa connection string poderá ser utilizada no requisito 1 **
-
-</details>
-
-<details id='refatorando'>
-  <summary>Continuando o projeto Trybe Hotel</summary>
-
-Você já iniciou o projeto da nossa aplicação e portanto, todas as funcionalidades podem ser trazidas para não duplicar o funcionamento. Isso será muito importante, especialmente no que diz respeito ao banco de dados. Algumas models do seu banco de dados anterior serão referenciadas nas models agora, portanto, vamos trazer as funcionalidades anteriores.
-
-Mas como fazemos isso:
-
-Após clonar o repositório deste projeto, apenas copie e cole as funcionalidades que você construiu anteriormente:
-
-- `Controllers`: copie todos os arquivos do diretório `Controllers` do projeto anterior e cole no diretório `Controllers` deste projeto.
-- `Dto`: copie todos os arquivos do diretório `Dto` do projeto anterior e cole no diretório `Dto` deste projeto.
-- `Models`: copie os arquivos referentes às models `City`, `Hotel`, `Room`, `User` e `Booking` do projeto anterior e cole no diretório `Models` deste projeto.
-- `Repository`: copie os arquivos `RoomRepository`, `HotelRepository`, `CityRepository`, `UserRepository` e `BookingRepository` do projeto anterior e cole no diretório `Repository` deste projeto. Não copie as interfaces. Para o arquivo `TrybeHotelContext`, não o substitua. Apenas adicione os `DBSets` e implemente os métodos `OnConfiguring()` e `OnModelCreating()`.
-- `Migrations`: Se você possui um diretório de migrations, significa que você criou migrations no projeto anterior. Não copie este diretório e crie migrations novas porque a instância do banco de dados no container não será o mesmo.
-- `Services`: copie todos os arquivos do diretório `Services` do projeto anterior e cole no diretório `Services` deste projeto.
-- `Testes`: No projeto de testes, você pode copiar a funcionalidade do arquivo `src/TrybeHotel.Test/IntegrationTest.cs`.
-
-</details>
-
-
-
-### 1. Desenvolva o endpoint GET /
-
-<details>
-  <summary><strong>Mais informações:</strong></summary>
-
-  - Desenvolva o endpoint `GET /` de modo que a response da API seja um status de sucesso com o seguinte corpo de resposta:
-
-  ```json
-  {
-	  "message": "online"
-  }
-  ```
- - Implemente o desenvolvimento no método `GetStatus()` do arquivo `src/TrybeHotel/Controllers/StatusController.cs`.
-
-**O que será testado:**
-
-- Será testado que a response da API segue o padrão solicitado.
-
-</details>
-
-
-### 2. Desenvolva o Dockerfile
-
-<details>
-  <summary><strong>Mais informações:</strong></summary>
-
-  - Desenvolva o Dockerfile da aplicação capaz de criar um container da sua API
-  - Implemente no arquivo `src/TrybeHotel/Dockerfile`.
-
-**O que será testado:**
-
-- Será testado que a response da API segue o padrão solicitado.
-
-</details>
-
-
-### 3. Faça o deploy da aplicação para o Railway - Bônus não avaliativo
-
-<details>
-  <summary><strong>Mais informações:</strong></summary>
-
-  - Utilize os conhecimentos adquiridos nesta seção para publicar a sua API Containerizada no Railway.
-  - **Este requisito é não avaliativo, portanto, não possui avaliação automatizada.**
-
-
-</details>
+- [THIAGO MARTINS](https://github.com/thiagomartins367) - criador e mantenedor

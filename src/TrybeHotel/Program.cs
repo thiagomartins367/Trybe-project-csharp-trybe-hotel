@@ -4,13 +4,30 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using TrybeHotel.Models;
+using TrybeHotel.Env;
 using TrybeHotel.Services;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Load environment variables
+var rootPath = Directory.GetCurrentDirectory();
+string? dotenvPath = null;
+const string developmentDotenvFileName = ".env.development.local";
+const string productionDotenvFileName = ".env.production.local";
+if (builder.Environment.IsDevelopment())
+    dotenvPath = Path.Combine(rootPath, developmentDotenvFileName);
+else
+{
+    dotenvPath = Path.Combine(rootPath, productionDotenvFileName);
+}
+EnvConfig.Load(dotenvPath);
 
+// Configure port
+var port = Environment.GetEnvironmentVariable(EnvironmentVariables.PORT);
+builder.WebHost.UseUrls($"http://*:{port}");
+
+// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddDbContext<TrybeHotelContext>();
 builder.Services.AddScoped<ITrybeHotelContext, TrybeHotelContext>();

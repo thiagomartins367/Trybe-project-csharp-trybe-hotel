@@ -1,0 +1,67 @@
+version: "3.8"
+services:
+  dev_trybe-hotel:
+    container_name: dev_trybe-hotel
+    image: dev_trybe-hotel
+    build:
+      context: ./src/TrybeHotel
+      dockerfile: Dockerfile.dev
+      target: development
+    working_dir: /usr/src/dev_trybe-hotel
+    restart: always
+    ports:
+      - 5057:5057
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    env_file:
+      - ./src/TrybeHotel/.env.development.local
+    volumes:
+      - ./src/TrybeHotel:/usr/src/dev_trybe-hotel
+      - ./src/TrybeHotel:/usr/src/dev_trybe-hotel/.entity-framework
+      - .config:/usr/src/dev_trybe-hotel/.config
+      - .config:/usr/src/dev_trybe-hotel/.entity-framework/.config
+      - /usr/src/dev_trybe-hotel/bin
+      - /usr/src/dev_trybe-hotel/obj
+      - /usr/src/dev_trybe-hotel/.entity-framework/bin
+      - /usr/src/dev_trybe-hotel/.entity-framework/obj
+    networks:
+      - dev_network-trybe-hotel
+
+  dev_db-trybe-hotel:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: dev_db-trybe-hotel
+    restart: always
+    ports:
+      - 1433:1433
+    env_file:
+      - ./src/TrybeHotel/.env.development.local
+    networks:
+      - dev_network-trybe-hotel
+
+  test_trybe-hotel:
+    container_name: test_trybe-hotel
+    image: test_trybe-hotel
+    build:
+      context: ./src
+      dockerfile: Dockerfile.test
+      target: test
+    working_dir: /usr/src/test_trybe-hotel
+    restart: always
+    volumes:
+      - ./src/TrybeHotel.Test:/usr/src/test_trybe-hotel/TrybeHotel.Test
+      - ./src/TrybeHotel:/usr/src/test_trybe-hotel/TrybeHotel
+      - /usr/src/test_trybe-hotel/TrybeHotel.Test/bin
+      - /usr/src/test_trybe-hotel/TrybeHotel.Test/obj
+      - /usr/src/test_trybe-hotel/TrybeHotel/bin
+      - /usr/src/test_trybe-hotel/TrybeHotel/obj
+    networks:
+      - test_network-trybe-hotel
+
+networks:
+  dev_network-trybe-hotel:
+    name: dev_network-trybe-hotel
+    external: false
+
+  test_network-trybe-hotel:
+    name: test_network-trybe-hotel
+    external: false

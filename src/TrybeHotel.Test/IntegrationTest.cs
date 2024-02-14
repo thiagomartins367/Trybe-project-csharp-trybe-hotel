@@ -207,8 +207,8 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             "/city",
             new List<CityDto>()
             {
-                new() { CityId = 1, Name = "Manaus" },
-                new() { CityId = 2, Name = "Palmas" },
+                new() { CityId = 1, Name = "Manaus", State = "AM" },
+                new() { CityId = 2, Name = "Palmas", State = "TO" },
             }
         }
     };
@@ -229,8 +229,8 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
     {
         {
             "/city",
-            new City() { Name = "Guarulhos" },
-            new CityDto() { CityId = 3, Name = "Guarulhos" }
+            new City() { Name = "Guarulhos", State = "SP" },
+            new CityDto() { CityId = 3, Name = "Guarulhos", State = "SP" }
         }
     };
 
@@ -252,9 +252,9 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             "/hotel",
             new List<HotelDto>()
             {
-                new() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" },
-                new() { HotelId = 2, Name = "Trybe Hotel Palmas", Address = "Address 2", CityId = 2, CityName = "Palmas" },
-                new() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" },
+                new() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus", State = "AM" },
+                new() { HotelId = 2, Name = "Trybe Hotel Palmas", Address = "Address 2", CityId = 2, CityName = "Palmas", State = "TO" },
+                new() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus", State = "AM" },
             }
         }
     };
@@ -280,7 +280,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
         {
             "/hotel",
             new Hotel() { Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1 },
-            new HotelDto() { HotelId = 4, Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1, CityName = "Manaus" }
+            new HotelDto() { HotelId = 4, Name = "Trybe Hotel AM", Address = "Avenida Atlântica, 1400", CityId = 1, CityName = "Manaus", State = "AM" }
         }
     };
 
@@ -302,9 +302,9 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
             "/room/1",
             new List<RoomDto>()
             {
-                new() { RoomId = 1, Name = "Room 1", Capacity = 2, Image = "Image 1", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
-                new() { RoomId = 2, Name = "Room 2", Capacity = 3, Image = "Image 2", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
-                new() { RoomId = 3, Name = "Room 3", Capacity = 4, Image = "Image 3", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus" } },
+                new() { RoomId = 1, Name = "Room 1", Capacity = 2, Image = "Image 1", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus", State = "AM" } },
+                new() { RoomId = 2, Name = "Room 2", Capacity = 3, Image = "Image 2", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus", State = "AM" } },
+                new() { RoomId = 3, Name = "Room 3", Capacity = 4, Image = "Image 3", Hotel = new HotelDto() { HotelId = 1, Name = "Trybe Hotel Manaus", Address = "Address 1", CityId = 1, CityName = "Manaus", State = "AM" } },
             }
         }
     };
@@ -330,7 +330,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
         {
             "/room",
             new Room() { Name = "Room 10", Capacity = 4, Image = "Image 10", HotelId = 3 },
-            new RoomDto() { RoomId = 10, Name = "Room 10", Capacity = 4, Image = "Image 10", Hotel = new HotelDto() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus" } }
+            new RoomDto() { RoomId = 10, Name = "Room 10", Capacity = 4, Image = "Image 10", Hotel = new HotelDto() { HotelId = 3, Name = "Trybe Hotel Ponta Negra", Address = "Addres 3", CityId = 1, CityName = "Manaus", State = "AM" } }
         }
     };
 
@@ -394,6 +394,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
                         Address = "Address 1",
                         CityId = 1,
                         CityName = "Manaus",
+                        State = "AM",
                     }
                 },
             }
@@ -439,6 +440,7 @@ public class IntegrationTest : IClassFixture<WebApplicationFactory<Program>>
                         Address = "Address 2",
                         CityId = 2,
                         CityName = "Palmas",
+                        State = "TO",
                     }
                 },
             }
