@@ -6,6 +6,13 @@ public static class EnvConfig
 {
     public static void Load(string path)
     {
+        try
+        {
+            VerifyEnvironmentVariables();
+            return;
+        }
+        catch (Exception) { }
+
         if (!File.Exists(path))
             throw new FileNotFoundException(
                 $"The \"{path}\" environment variables file not found!"
