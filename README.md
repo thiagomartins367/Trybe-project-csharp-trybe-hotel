@@ -34,10 +34,12 @@ Antes de iniciar a API é preciso primeiro definir algumas variáveis de ambient
 ```
 # TrybeHotel
 ASPNETCORE_ENVIRONMENT --> Define qual o ambiente em que a aplicação irá executar (Production ou Development)
-PORT --> Porta em que a aplicação irá ser disponibilizada.
+PORT --> Porta em que a API irá ser disponibilizada.
 DB_SERVER --> Servidor do banco de dados.
+DB_PORT --> Porta do banco de dados ao qual a API irá se conectar.
+DB_DIALECT --> Dialeto do banco de dados (0 - SQL Server; 1 - MySQL; etc...).
 DB_NAME --> Nome do banco de dados ao qual a API irá se conectar.
-DB_USER --> Usuário do banco de dados ao qual a API irá se conectar (User: SA).
+DB_USER --> Usuário do banco de dados ao qual a API irá se conectar.
 DB_PASSWORD --> Senha do usuário do banco de dados ao qual a API irá se conectar.
 AUTH_TOKEN_SECRET_KEY --> Chave secreta para geração de token de autenticação do usuário.
 AUTH_TOKEN_EXPIRE_DAYS --> Período em dias ao qual um token gerado será válido.
