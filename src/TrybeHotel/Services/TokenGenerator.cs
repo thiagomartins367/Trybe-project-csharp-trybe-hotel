@@ -1,11 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TrybeHotel.Models;
 using TrybeHotel.Dto;
-using TrybeHotel.Env;
 
 namespace TrybeHotel.Services
 {
@@ -15,16 +12,7 @@ namespace TrybeHotel.Services
 
         public TokenGenerator()
         {
-            var envSecretKey = Environment
-                .GetEnvironmentVariable(EnvironmentVariables.AUTH_TOKEN_SECRET_KEY);
-            var envExpiresDay = Environment
-                .GetEnvironmentVariable(EnvironmentVariables.AUTH_TOKEN_EXPIRE_DAYS);
-            var expiresDayIsNumber = int.TryParse(envExpiresDay, out int expiresDay);
-            _tokenOptions = new TokenOptions
-            {
-                Secret = envSecretKey is not null ? envSecretKey : "",
-                ExpiresDay = expiresDayIsNumber ? expiresDay : 7,
-            };
+            _tokenOptions = new TokenOptions();
         }
 
         public string Generate(UserDto user)
