@@ -3,7 +3,6 @@ using TrybeHotel.Repository;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using TrybeHotel.Models;
 using TrybeHotel.Env;
 using TrybeHotel.Services;
 using System.Security.Claims;
@@ -59,12 +58,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-
-builder.Services.Configure<TokenOptions>(
-    builder.Configuration.GetSection(TokenOptions.Token)
-);
-
-var tokenOptions = builder.Configuration.GetSection(TokenOptions.Token);
+TokenOptions tokenOptions = new();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -80,7 +74,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateAudience = false,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenOptions.GetValue<string>("Secret")))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(tokenOptions.Secret)),
     };
 });
 
