@@ -14,10 +14,12 @@ namespace TrybeHotel.Controllers
     public class BookingController : Controller
     {
         private readonly IBookingRepository _repository;
+        private readonly IRoomRepository _roomRepository;
 
-        public BookingController(IBookingRepository repository)
+        public BookingController(IBookingRepository repository, IRoomRepository roomRepository)
         {
             _repository = repository;
+            _roomRepository = roomRepository;
         }
 
         [HttpPost]
@@ -27,7 +29,7 @@ namespace TrybeHotel.Controllers
         {
             try
             {
-                Room room = _repository.GetRoomById(bookingInsert.RoomId);
+                RoomDto room = _roomRepository.GetRoomById(bookingInsert.RoomId);
                 if (room.Capacity < bookingInsert.GuestQuant)
                     return BadRequest(new { Message = "Guest quantity over room capacity" });
                 string userEmail = GetUserEmailFromToken();
