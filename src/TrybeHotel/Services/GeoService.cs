@@ -119,8 +119,8 @@ namespace TrybeHotel.Services
                 if (x.Distance is not null && y.Distance is not null)
                     return x.Distance.Value.CompareTo(y.Distance.Value);
                 if (x.Distance is not null && y.Distance is null)
-                    return 1;
-                return -1;
+                    return -1;
+                return 1;
             });
         }
 
