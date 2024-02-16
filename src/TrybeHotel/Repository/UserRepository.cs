@@ -17,14 +17,13 @@ namespace TrybeHotel.Repository
 
         public UserDto Login(LoginDto login)
         {
-            var user = _context.Users.FirstOrDefault(
-                user => (user.Email == login.Email) && (user.Password == login.Password)
-            );
+            bool VerifyLoginIsBinaryEqual(User userToValidation)
+            {
+                return StringIsBinaryEqual(login.Email, userToValidation.Email)
+                    && StringIsBinaryEqual(login.Password, userToValidation.Password);
+            }
+            var user = _context.Users.FirstOrDefault(VerifyLoginIsBinaryEqual);
             if (user is null)
-                throw new KeyNotFoundException("User not found");
-            var isBinaryEqual = StringIsBinaryEqual(login.Email, user.Email)
-                && StringIsBinaryEqual(login.Password, user.Password);
-            if (!isBinaryEqual)
                 throw new KeyNotFoundException("User not found");
             return PassUserEntityToOutput(user);
         }
@@ -39,8 +38,12 @@ namespace TrybeHotel.Repository
 
         public UserDto GetUserByEmail(string userEmail)
         {
-            var user = _context.Users.FirstOrDefault(user => user.Email == userEmail);
-            if (user is null || !StringIsBinaryEqual(userEmail, user!.Email))
+            bool VerifyEmailIsBinaryEqual(User userToValidation)
+            {
+                return StringIsBinaryEqual(userEmail, userToValidation.Email);
+            }
+            var user = _context.Users.FirstOrDefault(VerifyEmailIsBinaryEqual);
+            if (user is null)
                 throw new KeyNotFoundException("User not found");
             return PassUserEntityToOutput(user);
         }
