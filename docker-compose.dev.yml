@@ -13,6 +13,7 @@ services:
       - 5057:5057
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
     env_file:
       - ./src/TrybeHotel/.env.development.local
     volumes:

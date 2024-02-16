@@ -1,7 +1,5 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
-using System.ComponentModel;
-using System.Text.Json;
 
 namespace TrybeHotel.Repository
 {
@@ -20,10 +18,13 @@ namespace TrybeHotel.Repository
         public UserDto Login(LoginDto login)
         {
             var user = _context.Users.FirstOrDefault(
-                user => user.Email == login.Email
-                && user.Password == login.Password
+                user => (user.Email == login.Email) && (user.Password == login.Password)
             );
             if (user is null)
+                throw new KeyNotFoundException("User not found");
+            var isBinaryEqual = StringIsBinaryEqual(login.Email, user.Email)
+                && StringIsBinaryEqual(login.Password, user.Password);
+            if (!isBinaryEqual)
                 throw new KeyNotFoundException("User not found");
             return PassUserEntityToOutput(user);
         }
@@ -39,7 +40,7 @@ namespace TrybeHotel.Repository
         public UserDto GetUserByEmail(string userEmail)
         {
             var user = _context.Users.FirstOrDefault(user => user.Email == userEmail);
-            if (user is null)
+            if (user is null || !StringIsBinaryEqual(userEmail, user!.Email))
                 throw new KeyNotFoundException("User not found");
             return PassUserEntityToOutput(user);
         }
@@ -71,6 +72,11 @@ namespace TrybeHotel.Repository
                 Email = user.Email,
                 UserType = user.UserType,
             };
+        }
+
+        private static bool StringIsBinaryEqual(string StringA, string StringB)
+        {
+            return string.Equals(StringA, StringB, StringComparison.Ordinal);
         }
     }
 }
