@@ -7,15 +7,18 @@ namespace TrybeHotel.Repository
     public class BookingRepository : IBookingRepository
     {
         protected readonly ITrybeHotelContext _context;
-        public BookingRepository(ITrybeHotelContext context)
+        private readonly IUserRepository _userRepository;
+
+        public BookingRepository(ITrybeHotelContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
         // 9. Refatore o endpoint POST /booking
         public BookingResponse Add(BookingDtoInsert booking, string email)
         {
-            User user = GetUserByEmail(email);
+            UserDto user = _userRepository.GetUserByEmail(email);
             var bookingToInsert = new Booking()
             {
                 CheckIn = booking.CheckIn,
@@ -32,15 +35,15 @@ namespace TrybeHotel.Repository
         // 10. Refatore o endpoint GET /booking
         public BookingResponse GetBooking(int bookingId, string email)
         {
-            User user = GetUserByEmail(email);
+            UserDto user = _userRepository.GetUserByEmail(email);
             var booking = _context.Bookings
                 .Include(b => b.Room)
                 .ThenInclude(room => room!.Hotel)
                 .ThenInclude(hotel => hotel!.City)
                 .FirstOrDefault(b => b.BookingId == bookingId);
-            if (booking is null) throw new KeyNotFoundException("booking not found");
+            if (booking is null) throw new KeyNotFoundException("Booking not found");
             if (user.UserId != booking.UserId)
-                throw new UnauthorizedAccessException("booking not belong this user");
+                throw new UnauthorizedAccessException("Booking not belong this user");
             return new BookingResponse()
             {
                 BookingId = booking.BookingId,
@@ -64,19 +67,6 @@ namespace TrybeHotel.Repository
                     }
                 },
             };
-        }
-
-        public Room GetRoomById(int RoomId)
-        {
-            var room = _context.Rooms.FirstOrDefault(r => r.RoomId == RoomId);
-            if (room is null) throw new KeyNotFoundException("Room not found");
-            return room;
-        }
-
-        private User GetUserByEmail(string userEmail)
-        {
-            var user = _context.Users.First(user => user.Email == userEmail);
-            return user;
         }
     }
 }
