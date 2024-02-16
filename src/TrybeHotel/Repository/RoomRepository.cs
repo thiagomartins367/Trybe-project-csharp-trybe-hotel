@@ -7,6 +7,7 @@ namespace TrybeHotel.Repository
     public class RoomRepository : IRoomRepository
     {
         protected readonly ITrybeHotelContext _context;
+
         public RoomRepository(ITrybeHotelContext context)
         {
             _context = context;
@@ -44,6 +45,17 @@ namespace TrybeHotel.Repository
                 .Include(room => room.Hotel)
                 .ThenInclude(hotel => hotel!.City)
                 .Select(room => GetRoomDto(room));
+        }
+
+        public RoomDto GetRoomById(int roomId)
+        {
+            var room = _context.Rooms
+                .Include(room => room.Hotel)
+                .ThenInclude(hotel => hotel!.City)
+                .FirstOrDefault(room => room.RoomId == roomId);
+            if (room is null)
+                throw new KeyNotFoundException("Room not found");
+            return GetRoomDto(room);
         }
 
         // 8. Refatore o endpoint POST /room
