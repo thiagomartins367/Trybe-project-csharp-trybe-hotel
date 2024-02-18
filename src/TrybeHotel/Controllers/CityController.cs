@@ -51,10 +51,10 @@ namespace TrybeHotel.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [HttpPost]
-        public IActionResult PostCity([FromBody] City city)
+        public IActionResult PostCity([FromBody] CityDtoInsert city)
         {
-            var newCity = _repository.AddCity(city);
-            return Created("", newCity);
+            var newCity = _repository.AddCity(new City { Name = city.Name, State = city.State });
+            return Created(string.Empty, newCity);
         }
 
         /// <summary>
