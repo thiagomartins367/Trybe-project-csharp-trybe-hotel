@@ -81,12 +81,12 @@ namespace TrybeHotel.Controllers
             if (!_hotelRepository.HotelExists(roomToInsert.HotelId))
                 return NotFound(new ApiErrorResponse { Message = "Hotel not found" });
             var newRoom = _repository.AddRoom(new Room
-                {
-                    Name = roomToInsert.Name,
-                    Capacity = roomToInsert.Capacity,
-                    Image = roomToInsert.Image,
-                    HotelId = roomToInsert.HotelId,
-                });
+            {
+                Name = roomToInsert.Name,
+                Capacity = roomToInsert.Capacity,
+                Image = roomToInsert.Image,
+                HotelId = roomToInsert.HotelId,
+            });
             return Created(string.Empty, newRoom);
         }
 
