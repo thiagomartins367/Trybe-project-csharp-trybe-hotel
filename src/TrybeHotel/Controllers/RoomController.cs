@@ -67,10 +67,11 @@ namespace TrybeHotel.Controllers
         /// <response code="400">`Bad Request` Retorna resposta padrão de erro de validação de campos</response>
         /// <response code="401">`Unauthorized` Quando o token do usuário não é informado ou é inválido. (Sem corpo de resposta)</response>
         /// <response code="403">`Forbidden` Violação da política de usuário <b>Admin</b> através do campo <i>role</i> do token do usuário. (Sem corpo de resposta)</response>
-        /// <response code="404">`Not Found` Acesso a um <i>endpoint</i> que não existe. (Sem corpo de resposta)</response>
+        /// <response code="404">`Not Found` Retorna mensagem <b>"Hotel not found"</b> <br /> <p>`Not Found` Acesso a um <i>endpoint</i> que não existe. (Sem corpo de resposta)</p></response>
         /// <response code="415">`Unsupported Media Type` Retorna resposta padrão de tipo de mídia não suportado</response>
         [ProducesResponseType(typeof(RoomDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
