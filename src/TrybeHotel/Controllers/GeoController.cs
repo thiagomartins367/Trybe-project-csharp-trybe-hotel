@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TrybeHotel.Repository;
 using TrybeHotel.Dto;
 using TrybeHotel.Services;
@@ -63,9 +64,9 @@ namespace TrybeHotel.Controllers
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [HttpGet]
         [Route("address")]
-        public async Task<IActionResult> GetHotelsByLocation([FromBody] GeoDto address)
+        public async Task<IActionResult> GetHotelsByLocation([FromQuery, BindRequired] GeoDto addressData)
         {
-            var hotelsByLocation = await _geoService.GetHotelsByGeo(address, _repository);
+            var hotelsByLocation = await _geoService.GetHotelsByGeo(addressData, _repository);
             return Ok(hotelsByLocation);
         }
     }
