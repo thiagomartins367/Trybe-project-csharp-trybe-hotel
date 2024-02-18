@@ -1,13 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using TrybeHotel.Models;
 using TrybeHotel.Repository;
 using TrybeHotel.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TrybeHotel.Errors;
-using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Validations.Rules;
 
 namespace TrybeHotel.Controllers
 {
