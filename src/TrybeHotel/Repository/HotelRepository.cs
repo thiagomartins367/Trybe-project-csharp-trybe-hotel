@@ -43,5 +43,12 @@ namespace TrybeHotel.Repository
                 State = newHotel.City!.State,
             };
         }
+
+        public bool HotelExists(int HotelId)
+        {
+            var hotel = _context.Hotels.FirstOrDefault(hotel => hotel.HotelId == HotelId);
+            if (hotel is null) return false;
+            return true;
+        }
     }
 }
