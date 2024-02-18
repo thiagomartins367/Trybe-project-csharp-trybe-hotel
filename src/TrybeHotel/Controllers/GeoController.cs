@@ -43,25 +43,20 @@ namespace TrybeHotel.Controllers
         /// ⚠️ Esse <i>endpoint</i> consome dados de geolocalização da API <b><a href="https://nominatim.org" target="_blank">nominatim</a></b>.
         /// <br/>
         /// <br/>
-        /// ⚠️ (REFATORAR DE "FromBody" para "FromQuery" no método "GetHotelsByLocation") Esse <i>endpoint</i> usa <i>query params</i> (parâmetros de consulta), mas aceita <i>request body</i> (corpo de requisição).
-        /// <br/>
-        /// <br/>
-        /// Request body example:
+        /// Parameters example:
         ///
-        ///     {
-        ///        "address": "Av. Francisco Lacerda de Aguiar, 382",
-        ///        "city": "Cachoeiro de Itapemirim",
-        ///        "state": "ES"
-        ///     }
-        ///
+        /// 
+        ///     "Address" --> Av. Francisco Lacerda de Aguiar, 382
+        ///     "City" -----> Cachoeiro de Itapemirim
+        ///     "State" ----> ES
+        /// 
+        /// 
         /// </remarks>
         /// <response code="200">`OK` Retorna os hotéis mais próximos de um determinado endereço</response>
-        /// <response code="400">`Bad Request` Retorna resposta padrão de erro de validação de campos</response>
+        /// <response code="400">`Bad Request` Retorna resposta padrão de erro de validação de parâmetros</response>
         /// <response code="404">`Not Found` Acesso a um <i>endpoint</i> que não existe. (Sem corpo de resposta)</response>
-        /// <response code="415">`Unsupported Media Type` Retorna resposta padrão de tipo de mídia não suportado</response>
         [ProducesResponseType(typeof(List<GeoDtoHotelResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [HttpGet]
         [Route("address")]
         public async Task<IActionResult> GetHotelsByLocation([FromQuery, BindRequired] GeoDto addressData)
