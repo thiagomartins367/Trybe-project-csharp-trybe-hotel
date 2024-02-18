@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TrybeHotel.Dto;
 using TrybeHotel.Errors;
+using TrybeHotel.Errors.ApiExceptions;
 using TrybeHotel.Models;
 using TrybeHotel.Repository;
 
@@ -79,10 +80,23 @@ namespace TrybeHotel.Controllers
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [HttpPut]
-        public IActionResult PutCity([FromBody] City city)
+        public IActionResult PutCity([FromBody] CityDto city)
         {
-            var updatedCity = _repository.UpdateCity(city);
-            return Ok(updatedCity);
+            try
+            {
+                var updatedCity = _repository.UpdateCity(
+                new City
+                {
+                    CityId = city.CityId,
+                    Name = city.Name,
+                    State = city.State
+                });
+                return Ok(updatedCity);
+            }
+            catch (NotFoundException notFoundException)
+            {
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
+            }
         }
     }
 }
