@@ -1,10 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TrybeHotel.Dto
 {
     public class GeoDto
     {
-        public string? Address { get; set; }
-        public string? City { get; set; }
-        public string? State { get; set; }
+        [Required]
+        public string Address { get; set; } = null!;
+
+        [Required]
+        public string City { get; set; } = null!;
+
+        [Required]
+        public string State { get; set; } = null!;
     }
 
     public class GeoDtoResponse
