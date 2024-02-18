@@ -74,7 +74,7 @@ builder.Services.AddSwaggerGen(options =>
         new OpenApiSecurityScheme
         {
             In = ParameterLocation.Header,
-            Description = "Insira o token de autenticação do usuário da seguinte forma: `Bearer (token)`",
+            Description = "Insira o token de autenticação do usuário da seguinte forma: `Bearer <token>`",
             Name = "Authorization",
             Type = SecuritySchemeType.ApiKey,
         });
