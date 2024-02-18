@@ -39,7 +39,7 @@ public static class EnvConfig
         foreach (string name in variableNames)
         {
             var variableValue = Environment.GetEnvironmentVariable(name);
-            if (variableValue is null)
+            if (variableValue is null || variableValue.Length == 0)
                 throw new Exception($"Environment variable \"{name}\" not found or is empty!");
         }
     }
