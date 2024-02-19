@@ -58,7 +58,7 @@ namespace TrybeHotel.Controllers
         ///     {
         ///        "name": "Suite Deluxe",
         ///        "capacity": 4,
-        ///        "image": "https://image-example.com/suite/suite-deluxe.jpg"
+        ///        "image": "https://image-example.com/suite/suite-deluxe.jpg",
         ///        "hotelId": 3
         ///     }
         ///
