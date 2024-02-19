@@ -63,10 +63,15 @@ namespace TrybeHotel.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "Admin")]
-        public IActionResult PostHotel([FromBody] Hotel hotel)
+        public IActionResult PostHotel([FromBody] HotelDtoInsert hotelToInsert)
         {
-            var newHotel = _repository.AddHotel(hotel);
-            return Created("", newHotel);
+            var newHotel = _repository.AddHotel(new Hotel
+            {
+                Name = hotelToInsert.Name,
+                Address = hotelToInsert.Address,
+                CityId = hotelToInsert.CityId,
+            });
+            return Created(string.Empty, newHotel);
         }
     }
 }
