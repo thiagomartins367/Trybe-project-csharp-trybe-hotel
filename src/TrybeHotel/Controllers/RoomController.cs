@@ -90,6 +90,21 @@ namespace TrybeHotel.Controllers
             return Created(string.Empty, newRoom);
         }
 
+        /// <summary>
+        ///     Deleta um quarto de hotel pelo id
+        /// </summary>
+        /// <remarks>
+        /// ⚠️ Apenas usuários <b>administradores</b> podem consumir esse <i>endpoint</i>.
+        /// </remarks>
+        /// <response code="204">`No Content` Quando a deleção ocorre com sucesso. (Sem corpo de resposta)</response>
+        /// <response code="400">`Bad Request` Retorna resposta padrão de erro de validação do parâmetro <i>RoomId</i></response>
+        /// <response code="401">`Unauthorized` Quando o token do usuário não é informado ou é inválido. (Sem corpo de resposta)</response>
+        /// <response code="403">`Forbidden` Violação da política de usuário <b>Admin</b> através do campo <i>role</i> do token do usuário. (Sem corpo de resposta)</response>
+        /// <response code="404">`Not Found` Retorna mensagem <b>"Room not found"</b> <br /> <p>`Not Found` Acesso a um <i>endpoint</i> que não existe. (Sem corpo de resposta)</p></response>
+        /// <response code="405">`Method Not Allowed` Acesso incorreto ao <i>endpoint</i>. Ex: <b>/room/</b> (Sem corpo de resposta)</response>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
         [HttpDelete("{RoomId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "Admin")]
