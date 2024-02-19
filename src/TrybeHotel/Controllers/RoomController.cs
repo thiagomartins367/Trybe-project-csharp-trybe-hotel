@@ -91,7 +91,7 @@ namespace TrybeHotel.Controllers
         }
 
         /// <summary>
-        ///     Deleta um quarto de hotel pelo id
+        ///     Deleta um quarto pelo id
         /// </summary>
         /// <remarks>
         /// ⚠️ Apenas usuários <b>administradores</b> podem consumir esse <i>endpoint</i>.
