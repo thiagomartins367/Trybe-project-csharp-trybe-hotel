@@ -56,7 +56,7 @@ jobs:
         run: dotnet restore ./src
       
       - name: Build API
-        run: dotnet --no-restore -c Debug build ./src/TrybeHotel/TrybeHotel.csproj
+        run: dotnet build ./src/TrybeHotel/TrybeHotel.csproj --no-restore -c Debug
       
       - name: Run integration tests
-        run: dotnet --no-restore -c Debug test ./src/TrybeHotel.Test/TrybeHotel.test.csproj
+        run: dotnet test ./src/TrybeHotel.Test/TrybeHotel.test.csproj --no-restore -c Debug
