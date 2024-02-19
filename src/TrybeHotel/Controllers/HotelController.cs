@@ -15,10 +15,12 @@ namespace TrybeHotel.Controllers
     public class HotelController : Controller
     {
         private readonly IHotelRepository _repository;
+        private readonly ICityRepository _cityRepository;
 
-        public HotelController(IHotelRepository repository)
+        public HotelController(IHotelRepository repository, ICityRepository cityRepository)
         {
             _repository = repository;
+            _cityRepository = cityRepository;
         }
 
         /// <summary>
@@ -65,6 +67,8 @@ namespace TrybeHotel.Controllers
         [Authorize(Policy = "Admin")]
         public IActionResult PostHotel([FromBody] HotelDtoInsert hotelToInsert)
         {
+            if (!_cityRepository.CityExists(hotelToInsert.CityId))
+                return NotFound(new ApiErrorResponse { Message = "City not found" });
             var newHotel = _repository.AddHotel(new Hotel
             {
                 Name = hotelToInsert.Name,
