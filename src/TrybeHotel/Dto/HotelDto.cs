@@ -9,4 +9,11 @@ namespace TrybeHotel.Dto
         public string CityName { get; set; } = null!;
         public string State { get; set; } = null!;
     }
+
+    public class HotelDtoInsert
+    {
+        public string Name { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public int CityId { get; set; }
+    }
 }
