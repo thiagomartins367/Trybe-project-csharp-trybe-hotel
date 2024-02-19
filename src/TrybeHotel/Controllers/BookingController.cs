@@ -54,6 +54,8 @@ namespace TrybeHotel.Controllers
         {
             try
             {
+                if (!_roomRepository.RoomExists(bookingInsert.RoomId))
+                    return NotFound("Room not found");
                 RoomDto room = _roomRepository.GetRoomById(bookingInsert.RoomId);
                 if (room.Capacity < bookingInsert.GuestQuant)
                     return BadRequest(new { Message = "Guest quantity over room capacity" });
