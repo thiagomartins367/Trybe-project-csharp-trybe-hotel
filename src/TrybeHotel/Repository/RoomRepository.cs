@@ -78,5 +78,12 @@ namespace TrybeHotel.Repository
             _context.Rooms.Remove(room);
             _context.SaveChanges();
         }
+
+        public bool RoomExists(int roomId)
+        {
+            var room = _context.Rooms.FirstOrDefault(room => room.RoomId == roomId);
+            if (room is null) return false;
+            return true;
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace TrybeHotel.Repository
         RoomDto GetRoomById(int roomId);
         RoomDto AddRoom(Room room);
         void DeleteRoom(int RoomId);
+        bool RoomExists(int roomId);
     }
 }

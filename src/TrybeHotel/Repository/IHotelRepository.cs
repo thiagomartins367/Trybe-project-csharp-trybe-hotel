@@ -7,5 +7,6 @@ namespace TrybeHotel.Repository
     {
         IEnumerable<HotelDto> GetHotels();
         HotelDto AddHotel(Hotel hotel);
+        bool HotelExists(int HotelId);
     }
 }

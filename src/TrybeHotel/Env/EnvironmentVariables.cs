@@ -14,6 +14,7 @@ public static class EnvironmentVariables
     public const string DB_PASSWORD = "DB_PASSWORD";
     public const string AUTH_TOKEN_SECRET_KEY = "AUTH_TOKEN_SECRET_KEY";
     public const string AUTH_TOKEN_EXPIRE_DAYS = "AUTH_TOKEN_EXPIRE_DAYS";
+    public const string SOFTWARE_LICENSE_URL = "SOFTWARE_LICENSE_URL";
 
     public static string[] GetVariableNames()
     {

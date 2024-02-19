@@ -1,5 +1,6 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Repository
 {
@@ -11,7 +12,6 @@ namespace TrybeHotel.Repository
             _context = context;
         }
 
-        // 4. Refatore o endpoint GET /city
         public IEnumerable<CityDto> GetCities()
         {
             return _context.Cities.Select(
@@ -19,7 +19,6 @@ namespace TrybeHotel.Repository
             );
         }
 
-        // 2. Refatore o endpoint POST /city
         public CityDto AddCity(City city)
         {
             _context.Cities.Add(city);
@@ -27,12 +26,20 @@ namespace TrybeHotel.Repository
             return new CityDto() { CityId = city.CityId, Name = city.Name, State = city.State };
         }
 
-        // 3. Desenvolva o endpoint PUT /city
         public CityDto UpdateCity(City city)
         {
+            if (!CityExists(city.CityId))
+                throw new NotFoundException("City not found");
             _context.Cities.Update(city);
             _context.SaveChanges();
             return new CityDto() { CityId = city.CityId, Name = city.Name, State = city.State };
+        }
+
+        public bool CityExists(int cityId)
+        {
+            var city = _context.Cities.FirstOrDefault(city => city.CityId == cityId);
+            if (city is null) return false;
+            return true;
         }
     }
 }
