@@ -39,12 +39,12 @@ namespace TrybeHotel.Controllers
         ///
         /// </remarks>
         /// <response code="201">`Created` Retorna os dados da nova reserva</response>
-        /// <response code="400">`Bad Request` Retorna resposta padrão de erro de validação de campos</response>
+        /// <response code="400">`Bad Request` Retorna mensagem <b>"Guest quantity over room capacity"</b></response>
         /// <response code="401">`Unauthorized` Quando o token do usuário não é informado ou é inválido. (Sem corpo de resposta)</response>
         /// <response code="404">`Not Found` Retorna mensagem <b>"Room not found"</b> <br /> <p>`Not Found` Acesso a um <i>endpoint</i> que não existe. (Sem corpo de resposta)</p></response>
         /// <response code="415">`Unsupported Media Type` Retorna resposta padrão de tipo de mídia não suportado</response>
         [ProducesResponseType(typeof(BookingResponse), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status415UnsupportedMediaType)]
         [HttpPost]
