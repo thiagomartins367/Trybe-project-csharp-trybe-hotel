@@ -56,7 +56,19 @@ jobs:
         run: dotnet restore ./src
       
       - name: Build API
-        run: dotnet --no-restore -c Debug build ./src/TrybeHotel/TrybeHotel.csproj
+        run: dotnet build ./src/TrybeHotel/TrybeHotel.csproj --no-restore -c Debug
       
       - name: Run integration tests
-        run: dotnet --no-restore -c Debug test ./src/TrybeHotel.Test/TrybeHotel.test.csproj
+        run: dotnet test ./src/TrybeHotel.Test/TrybeHotel.test.csproj --no-restore -c Debug --filter 'FullyQualifiedName~TrybeHotel.Test.IntegrationTest'
+        env:
+          ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
+          PORT: ${{ vars.PORT }}
+          DB_SERVER: ${{ vars.DB_SERVER }}
+          DB_PORT: ${{ vars.DB_PORT }}
+          DB_DIALECT: ${{ vars.DB_DIALECT }}
+          DB_NAME: ${{ vars.DB_NAME }}
+          DB_USER: ${{ vars.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          AUTH_TOKEN_SECRET_KEY: ${{ secrets.AUTH_TOKEN_SECRET_KEY }}
+          AUTH_TOKEN_EXPIRE_DAYS: ${{ vars.AUTH_TOKEN_EXPIRE_DAYS }}
+          SOFTWARE_LICENSE_URL: ${{ vars.SOFTWARE_LICENSE_URL }}
