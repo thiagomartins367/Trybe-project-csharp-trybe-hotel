@@ -4,9 +4,15 @@ Boas-vindas ao repositório do projeto `Trybe Hotel`
 
 Nesse projeto foi desenvolvido uma API de booking de várias redes de hotéis, trata-se de um software completo contando com recurso de **autenticação e autorização por token**, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de **geolocalização** sendo possível obter os hotéis mais próximos de um determinado endereço através do consumo de dados da API [nominatim](https://nominatim.org/release-docs/latest).
 
-Desenvolvido durante o período de **Aceleração C#** da Trybe 🚀
+O projeto também conta com:
 
-Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento dos requisitos solicitados!
+- ✅ **CI (Continuous Integration)** usando *Gihub Actions* para executar o Linter do .NET (dotnet format) e os testes de integração da API após um *Pull Request* ser criado para a branch `main`.
+
+- 🚀 **CD (Continuous Deployment)** usando o [Railway](https://railway.app) para obter o código mais recente da branch `main` e assim efetuar o deploy de produção da API.
+ 
+Desenvolvido durante o período de **Aceleração C#** da Trybe 💚
+
+Tem por objetivo a avaliação e prática dos conhecimentos adquiridos durante a aceleração, visando o cumprimento dos requisitos solicitados.
 
 ## Fases do projeto 🔨
 O projeto foi construído em 4 fases em que cada fase consistia em desenvolver um novo recurso da aplicação no repositório correspondente daquela fase e adicionar o código finalizado da fase anterior na atual e assim por diante até que a API estivesse completa na última fase. As fases foram nomeadas seguindo a ordem das letras do alfabeto.
@@ -26,7 +32,7 @@ O projeto foi construído em 4 fases em que cada fase consistia em desenvolver u
 <br />
 
 - **Fase D - Status e deploy 🚀**
-  - Nessa fase foi desenvolvido um recurso para obter o status da API, nescessário para saber se ela está ou não online. Também foi criado um Dockerfile da aplicação para o deploy no [Railway](https://railway.app/).
+  - Nessa fase foi desenvolvido um recurso para obter o status da API, nescessário para saber se ela está ou não online. Também foi criado um Dockerfile de produção para o deploy no [Railway](https://railway.app).
  
 ## Variáveis de Ambiente 💻
 Antes de iniciar a API é preciso primeiro definir algumas variáveis de ambiente para seu correto funcionamento. Para isso é preciso criar o arquivo `.env.production.local` no caminho `./src/TrybeHotel` para o ambiente de **produção** ou o arquivo `.env.development.local` para o ambiente de **desenvolvimento**, utilize os arquivos de extensão `.example` para criar uma cópia com todas as variáveis existentes de cada ambiente.
