@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TrybeHotel.Utils;
 
-namespace TrybeHotel.Controllers
+namespace TrybeHotel.Controllers 
 {
     [ApiController]
     [Route("/")]
