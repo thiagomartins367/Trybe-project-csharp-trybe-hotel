@@ -59,7 +59,7 @@ jobs:
         run: dotnet build ./src/TrybeHotel/TrybeHotel.csproj --no-restore -c Debug
       
       - name: Run integration tests
-        run: dotnet test ./src/TrybeHotel.Test/TrybeHotel.test.csproj --no-restore -c Debug
+        run: dotnet test ./src/TrybeHotel.Test/TrybeHotel.test.csproj --no-restore -c Debug --filter 'FullyQualifiedName~TrybeHotel.Test.IntegrationTest'
         env:
           ASPNETCORE_ENVIRONMENT: ${{ vars.ASPNETCORE_ENVIRONMENT }}
           PORT: ${{ vars.PORT }}
