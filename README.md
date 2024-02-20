@@ -2,7 +2,7 @@
 
 Boas-vindas ao repositório do projeto `Trybe Hotel`
 
-Nesse projeto foi desenvolvido uma API de booking de várias redes de hotéis, trata-se de um software completo contando com recurso de **autenticação e autorização por token**, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de **geolocalização** sendo possível obter os hotéis mais próximos de um determinado endereço através do consumo de dados da API [nominatim](https://nominatim.org/release-docs/latest).
+Nesse projeto foi desenvolvido uma API de booking de várias redes de hotéis, trata-se de um software completo contando com recurso de **autenticação e autorização por token**, reserva de quartos e CRUD de hotéis, cidades, quartos e usuários. Além disso conta com um recurso especial de **geolocalização** sendo possível obter os hotéis mais próximos de um determinado endereço através do consumo de dados da API [nominatim](https://nominatim.org).
 
 O projeto também conta com:
 
@@ -28,7 +28,7 @@ O projeto foi construído em 4 fases em que cada fase consistia em desenvolver u
 <br />
 
 - **Fase C - Geolocalização 📍🌎**
-  - Nessa fase foi desenvolvido um recurso especial de **geolocalização** que permite buscar os hotéis mais próximos baseando-se em um endereço que o usuário forneça ordenando o resultado dessa consulta do hotel mais próximo para o menos próximo. Esse recurso utiliza o serviço externo [nominatim](https://nominatim.org/release-docs/latest) para obter os dados de latitude e longitude do endereço informado. Foi nescessário refatorar alguns recursos anteriormente desenvolvidos para que essa nova funcionalidade pudesse ser implementada.
+  - Nessa fase foi desenvolvido um recurso especial de **geolocalização** que permite buscar os hotéis mais próximos baseando-se em um endereço que o usuário forneça ordenando o resultado dessa consulta do hotel mais próximo para o menos próximo. Esse recurso utiliza o serviço externo [nominatim](https://nominatim.org) para obter os dados de latitude e longitude do endereço informado. Foi nescessário refatorar alguns recursos anteriormente desenvolvidos para que essa nova funcionalidade pudesse ser implementada.
 <br />
 
 - **Fase D - Status e deploy 🚀**
