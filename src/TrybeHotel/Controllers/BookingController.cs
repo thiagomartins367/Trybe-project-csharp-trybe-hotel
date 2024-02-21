@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using TrybeHotel.Models;
 using TrybeHotel.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using TrybeHotel.Dto;
 using TrybeHotel.Errors;
@@ -58,18 +56,18 @@ namespace TrybeHotel.Controllers
                     return NotFound("Room not found");
                 RoomDto room = _roomRepository.GetRoomById(bookingInsert.RoomId);
                 if (room.Capacity < bookingInsert.GuestQuant)
-                    return BadRequest(new { Message = "Guest quantity over room capacity" });
+                    return BadRequest(new ApiErrorResponse { Message = "Guest quantity over room capacity" });
                 string userEmail = GetUserEmailFromToken();
                 BookingResponse newBooking = _repository.Add(bookingInsert, userEmail);
                 return Created("GetBooking", newBooking);
             }
             catch (KeyNotFoundException notFoundException)
             {
-                return NotFound(new { notFoundException.Message });
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
             catch (UnauthorizedAccessException unauthorizedException)
             {
-                return Unauthorized(new { unauthorizedException.Message });
+                return Unauthorized(new ApiErrorResponse { Message = unauthorizedException.Message });
             }
         }
 
@@ -97,11 +95,11 @@ namespace TrybeHotel.Controllers
             }
             catch (KeyNotFoundException notFoundException)
             {
-                return NotFound(new { notFoundException.Message });
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
             catch (UnauthorizedAccessException UnauthorizedException)
             {
-                return Unauthorized(new { UnauthorizedException.Message });
+                return Unauthorized(new ApiErrorResponse { Message = UnauthorizedException.Message });
             }
         }
 
