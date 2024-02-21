@@ -51,7 +51,7 @@ namespace TrybeHotel.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return Unauthorized(new { Message = "Incorrect e-mail or password" });
+                return Unauthorized(new ApiErrorResponse { Message = "Incorrect e-mail or password" });
             }
         }
     }
