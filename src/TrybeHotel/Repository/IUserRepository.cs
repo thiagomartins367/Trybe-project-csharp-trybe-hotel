@@ -9,6 +9,8 @@ namespace TrybeHotel.Repository
         UserDto Login(LoginDto login);
         UserDto GetUserByEmail(string userEmail);
         IEnumerable<UserDto> GetUsers();
+        bool UserExists(int userId);
+        bool UserExists(string userEmail);
     }
 
 }

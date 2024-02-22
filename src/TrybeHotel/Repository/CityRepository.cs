@@ -7,6 +7,7 @@ namespace TrybeHotel.Repository
     public class CityRepository : ICityRepository
     {
         protected readonly ITrybeHotelContext _context;
+
         public CityRepository(ITrybeHotelContext context)
         {
             _context = context;

@@ -1,15 +1,18 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Repository
 {
     public class UserRepository : IUserRepository
     {
         protected readonly ITrybeHotelContext _context;
+
         public UserRepository(ITrybeHotelContext context)
         {
             _context = context;
         }
+
         public UserDto GetUserById(int userId)
         {
             throw new NotImplementedException();
@@ -24,12 +27,14 @@ namespace TrybeHotel.Repository
             }
             var user = _context.Users.FirstOrDefault(VerifyLoginIsBinaryEqual);
             if (user is null)
-                throw new KeyNotFoundException("User not found");
+                throw new NotFoundException("Incorrect email or password");
             return PassUserEntityToOutput(user);
         }
 
         public UserDto Add(UserDtoInsert user)
         {
+            if (UserExists(user.Email))
+                throw new ConflictException("User email already exists");
             User newUser = PassInputToUserEntity(user);
             _context.Users.Add(newUser);
             _context.SaveChanges();
@@ -44,7 +49,7 @@ namespace TrybeHotel.Repository
             }
             var user = _context.Users.FirstOrDefault(VerifyEmailIsBinaryEqual);
             if (user is null)
-                throw new KeyNotFoundException("User not found");
+                throw new NotFoundException("User not found");
             return PassUserEntityToOutput(user);
         }
 
@@ -53,6 +58,24 @@ namespace TrybeHotel.Repository
             return _context.Users.Select(
                 user => PassUserEntityToOutput(user)
             );
+        }
+
+        public bool UserExists(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(user => user.UserId == userId);
+            if (user is null) return false;
+            return true;
+        }
+
+        public bool UserExists(string userEmail)
+        {
+            bool VerifyEmailIsBinaryEqual(User userToValidation)
+            {
+                return StringIsBinaryEqual(userEmail, userToValidation.Email);
+            }
+            var user = _context.Users.FirstOrDefault(VerifyEmailIsBinaryEqual);
+            if (user is null) return false;
+            return true;
         }
 
         private static User PassInputToUserEntity(UserDtoInsert input)

@@ -5,6 +5,7 @@ using TrybeHotel.Models;
 using TrybeHotel.Repository;
 using TrybeHotel.Dto;
 using TrybeHotel.Errors;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Controllers
 {
@@ -40,9 +41,9 @@ namespace TrybeHotel.Controllers
                 var rooms = _repository.GetRooms(HotelId);
                 return Ok(rooms);
             }
-            catch (KeyNotFoundException notFoundException)
+            catch (NotFoundException notFoundException)
             {
-                return NotFound(new { notFoundException.Message });
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
         }
 
@@ -115,9 +116,9 @@ namespace TrybeHotel.Controllers
                 _repository.DeleteRoom(RoomId);
                 return NoContent();
             }
-            catch (KeyNotFoundException notFoundException)
+            catch (NotFoundException notFoundException)
             {
-                return NotFound(new { notFoundException.Message });
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
         }
     }
