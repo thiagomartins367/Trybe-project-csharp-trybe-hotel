@@ -7,10 +7,12 @@ namespace TrybeHotel.Repository
     public class UserRepository : IUserRepository
     {
         protected readonly ITrybeHotelContext _context;
+
         public UserRepository(ITrybeHotelContext context)
         {
             _context = context;
         }
+
         public UserDto GetUserById(int userId)
         {
             throw new NotImplementedException();
@@ -54,6 +56,24 @@ namespace TrybeHotel.Repository
             return _context.Users.Select(
                 user => PassUserEntityToOutput(user)
             );
+        }
+
+        public bool UserExists(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(user => user.UserId == userId);
+            if (user is null) return false;
+            return true;
+        }
+
+        public bool UserExists(string userEmail)
+        {
+            bool VerifyEmailIsBinaryEqual(User userToValidation)
+            {
+                return StringIsBinaryEqual(userEmail, userToValidation.Email);
+            }
+            var user = _context.Users.FirstOrDefault(VerifyEmailIsBinaryEqual);
+            if (user is null) return false;
+            return true;
         }
 
         private static User PassInputToUserEntity(UserDtoInsert input)
