@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using TrybeHotel.Repository;
 using TrybeHotel.Dto;
 using TrybeHotel.Services;
-using TrybeHotel.Errors;
 using TrybeHotel.Utils;
+using TrybeHotel.Errors;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Controllers
 {
@@ -49,9 +50,9 @@ namespace TrybeHotel.Controllers
                 string token = new TokenGenerator().Generate(user);
                 return Ok(new { token });
             }
-            catch (KeyNotFoundException)
+            catch (NotFoundException notFoundException)
             {
-                return Unauthorized(new ApiErrorResponse { Message = "Incorrect e-mail or password" });
+                return Unauthorized(new ApiErrorResponse { Message = notFoundException.Message });
             }
         }
     }
