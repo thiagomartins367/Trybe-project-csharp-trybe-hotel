@@ -1,5 +1,6 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Repository
 {
@@ -24,7 +25,7 @@ namespace TrybeHotel.Repository
             }
             var user = _context.Users.FirstOrDefault(VerifyLoginIsBinaryEqual);
             if (user is null)
-                throw new KeyNotFoundException("User not found");
+                throw new NotFoundException("Incorrect email or password");
             return PassUserEntityToOutput(user);
         }
 
@@ -44,7 +45,7 @@ namespace TrybeHotel.Repository
             }
             var user = _context.Users.FirstOrDefault(VerifyEmailIsBinaryEqual);
             if (user is null)
-                throw new KeyNotFoundException("User not found");
+                throw new NotFoundException("User not found");
             return PassUserEntityToOutput(user);
         }
 
