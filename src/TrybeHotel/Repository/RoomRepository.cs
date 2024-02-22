@@ -1,6 +1,7 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
 using Microsoft.EntityFrameworkCore;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Repository
 {
@@ -33,13 +34,12 @@ namespace TrybeHotel.Repository
             };
         }
 
-        // 7. Refatore o endpoint GET /room
         public IEnumerable<RoomDto> GetRooms(int hotelId)
         {
             var hotel = _context.Hotels
                 .FirstOrDefault(hotel => hotel.HotelId == hotelId);
             if (hotel is null)
-                throw new KeyNotFoundException("Hotel not found");
+                throw new NotFoundException("Hotel not found");
             return _context.Rooms
                 .Where(room => room.HotelId == hotelId)
                 .Include(room => room.Hotel)
@@ -54,11 +54,10 @@ namespace TrybeHotel.Repository
                 .ThenInclude(hotel => hotel!.City)
                 .FirstOrDefault(room => room.RoomId == roomId);
             if (room is null)
-                throw new KeyNotFoundException("Room not found");
+                throw new NotFoundException("Room not found");
             return GetRoomDto(room);
         }
 
-        // 8. Refatore o endpoint POST /room
         public RoomDto AddRoom(Room room)
         {
             _context.Rooms.Add(room);
@@ -74,7 +73,7 @@ namespace TrybeHotel.Repository
         {
             var room = _context.Rooms.FirstOrDefault(r => r.RoomId == RoomId);
             if (room is null)
-                throw new KeyNotFoundException("Room not found");
+                throw new NotFoundException("Room not found");
             _context.Rooms.Remove(room);
             _context.SaveChanges();
         }
