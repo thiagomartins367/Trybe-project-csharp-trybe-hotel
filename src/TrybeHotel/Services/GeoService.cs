@@ -1,4 +1,5 @@
 using TrybeHotel.Dto;
+using TrybeHotel.Errors;
 using TrybeHotel.Repository;
 
 namespace TrybeHotel.Services
@@ -16,7 +17,6 @@ namespace TrybeHotel.Services
             _client.DefaultRequestHeaders.Add("User-Agent", "aspnet-user-agent");
         }
 
-        // 11. Desenvolva o endpoint GET /geo/status
         public async Task<object?> GetGeoStatus()
         {
             try
@@ -29,11 +29,10 @@ namespace TrybeHotel.Services
             }
             catch (Exception)
             {
-                return new { Message = $"Failed when trying to communicate with \"{_baseUrl}\"" };
+                return new ApiErrorResponse { Message = $"Failed when trying to communicate with \"{_baseUrl}\"" };
             }
         }
 
-        // 12. Desenvolva o endpoint GET /geo/address
         public async Task<GeoDtoResponse?> GetGeoLocation(GeoDto geoDto)
         {
             var queryParams = new Dictionary<string, string?>()
@@ -62,7 +61,6 @@ namespace TrybeHotel.Services
             }
         }
 
-        // 12. Desenvolva o endpoint GET /geo/address
         public async Task<List<GeoDtoHotelResponse>> GetHotelsByGeo(GeoDto geoDto, IHotelRepository repository)
         {
             var geoLocationOrigin = await GetGeoLocation(geoDto);
