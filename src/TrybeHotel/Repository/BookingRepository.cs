@@ -1,6 +1,7 @@
 using TrybeHotel.Models;
 using TrybeHotel.Dto;
 using Microsoft.EntityFrameworkCore;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Repository
 {
@@ -15,7 +16,6 @@ namespace TrybeHotel.Repository
             _userRepository = userRepository;
         }
 
-        // 9. Refatore o endpoint POST /booking
         public BookingResponse Add(BookingDtoInsert booking, string email)
         {
             UserDto user = _userRepository.GetUserByEmail(email);
@@ -32,7 +32,6 @@ namespace TrybeHotel.Repository
             return GetBooking(bookingToInsert.BookingId, email);
         }
 
-        // 10. Refatore o endpoint GET /booking
         public BookingResponse GetBooking(int bookingId, string email)
         {
             UserDto user = _userRepository.GetUserByEmail(email);
@@ -41,7 +40,7 @@ namespace TrybeHotel.Repository
                 .ThenInclude(room => room!.Hotel)
                 .ThenInclude(hotel => hotel!.City)
                 .FirstOrDefault(b => b.BookingId == bookingId);
-            if (booking is null) throw new KeyNotFoundException("Booking not found");
+            if (booking is null) throw new NotFoundException("Booking not found");
             if (user.UserId != booking.UserId)
                 throw new UnauthorizedAccessException("Booking not belong this user");
             return new BookingResponse()
