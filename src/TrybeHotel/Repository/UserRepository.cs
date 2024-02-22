@@ -33,6 +33,8 @@ namespace TrybeHotel.Repository
 
         public UserDto Add(UserDtoInsert user)
         {
+            if (UserExists(user.Email))
+                throw new ConflictException("User email already exists");
             User newUser = PassInputToUserEntity(user);
             _context.Users.Add(newUser);
             _context.SaveChanges();
