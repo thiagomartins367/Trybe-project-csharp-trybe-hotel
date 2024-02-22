@@ -65,9 +65,9 @@ namespace TrybeHotel.Controllers
         public IActionResult Add([FromBody] UserDtoInsert user)
         {
             if (UserExists(user))
-                return Conflict(new { Message = "User email already exists" });
+                return Conflict(new ApiErrorResponse { Message = "User email already exists" });
             var newUser = _repository.Add(user);
-            return Created("", newUser);
+            return Created(string.Empty, newUser);
         }
 
         private bool UserExists(UserDtoInsert user)
