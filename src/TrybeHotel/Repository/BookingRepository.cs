@@ -42,7 +42,7 @@ namespace TrybeHotel.Repository
                 .FirstOrDefault(b => b.BookingId == bookingId);
             if (booking is null) throw new NotFoundException("Booking not found");
             if (user.UserId != booking.UserId)
-                throw new UnauthorizedAccessException("Booking not belong this user");
+                throw new UnauthorizedException("Booking not belong this user");
             return new BookingResponse()
             {
                 BookingId = booking.BookingId,
