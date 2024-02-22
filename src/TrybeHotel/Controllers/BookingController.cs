@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
 using TrybeHotel.Dto;
 using TrybeHotel.Errors;
+using TrybeHotel.Errors.ApiExceptions;
 
 namespace TrybeHotel.Controllers
 {
@@ -61,11 +62,11 @@ namespace TrybeHotel.Controllers
                 BookingResponse newBooking = _repository.Add(bookingInsert, userEmail);
                 return Created("GetBooking", newBooking);
             }
-            catch (KeyNotFoundException notFoundException)
+            catch (NotFoundException notFoundException)
             {
                 return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
-            catch (UnauthorizedAccessException unauthorizedException)
+            catch (UnauthorizedException unauthorizedException)
             {
                 return Unauthorized(new ApiErrorResponse { Message = unauthorizedException.Message });
             }
@@ -93,11 +94,11 @@ namespace TrybeHotel.Controllers
                 var booking = _repository.GetBooking(BookingId, userEmail);
                 return Ok(booking);
             }
-            catch (KeyNotFoundException notFoundException)
+            catch (NotFoundException notFoundException)
             {
                 return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
-            catch (UnauthorizedAccessException UnauthorizedException)
+            catch (UnauthorizedException UnauthorizedException)
             {
                 return Unauthorized(new ApiErrorResponse { Message = UnauthorizedException.Message });
             }
