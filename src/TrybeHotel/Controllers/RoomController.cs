@@ -42,7 +42,7 @@ namespace TrybeHotel.Controllers
             }
             catch (KeyNotFoundException notFoundException)
             {
-                return NotFound(new { notFoundException.Message });
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
         }
 
@@ -117,7 +117,7 @@ namespace TrybeHotel.Controllers
             }
             catch (KeyNotFoundException notFoundException)
             {
-                return NotFound(new { notFoundException.Message });
+                return NotFound(new ApiErrorResponse { Message = notFoundException.Message });
             }
         }
     }
