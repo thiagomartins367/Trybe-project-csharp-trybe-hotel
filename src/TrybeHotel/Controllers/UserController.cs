@@ -64,23 +64,10 @@ namespace TrybeHotel.Controllers
         [HttpPost]
         public IActionResult Add([FromBody] UserDtoInsert user)
         {
-            if (UserExists(user))
+            if (_repository.UserExists(user.Email))
                 return Conflict(new ApiErrorResponse { Message = "User email already exists" });
             var newUser = _repository.Add(user);
             return Created(string.Empty, newUser);
-        }
-
-        private bool UserExists(UserDtoInsert user)
-        {
-            try
-            {
-                UserDto existingUser = _repository.GetUserByEmail(user.Email);
-                return true;
-            }
-            catch (KeyNotFoundException)
-            {
-                return false;
-            }
         }
     }
 }
